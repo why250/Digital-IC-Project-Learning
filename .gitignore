@@ -1,0 +1,9 @@
+# Generated simulation/synthesis files and project-local tools
+**/results/
+.tools/
+*.log
+*.cmd
+*.vcd
+*.vvp
+__pycache__/
+*.pyc
