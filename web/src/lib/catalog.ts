@@ -28,7 +28,7 @@ export interface Document {
   file: string; slug: string; url: string; title: string; content: string;
   headings: Heading[]; courseId?: string; kind: string; search: string;
 }
-export interface Lesson { id: string; title: string; url: string; courseId: string; file: string }
+export interface Lesson { id: string; title: string; url: string; readingUrl: string; courseId: string; file: string }
 function walk(directory: string): string[] {
   return readdirSync(path.join(projectRoot, directory), { withFileTypes: true }).flatMap(entry => {
     const file = `${directory}/${entry.name}`;
@@ -76,7 +76,10 @@ export const lessons: Lesson[] = courses.flatMap(course => {
   const pattern = new RegExp(`^${course.prefix}(\\d{2})(?:[:：\\s]|$)`);
   return chapterDocs.flatMap(doc => doc.headings.filter(heading => heading.depth <= 2 && pattern.test(heading.text)).map(heading => {
     const number = heading.text.match(pattern)![1]!;
-    return { id: `${course.prefix}${number}`, title: heading.text, url: `${doc.url}#${heading.slug}`, courseId: course.id, file: doc.file };
+    const id = `${course.prefix}${number}`;
+    const reading = doc.headings.find(item => item.depth === 3 && item.text === `${id} 参考与实验`);
+    if (!reading) throw new Error(`Missing lesson reading and experiment: ${id}`);
+    return { id, title: heading.text, url: `${doc.url}#${heading.slug}`, readingUrl: `${doc.url}#${reading.slug}`, courseId: course.id, file: doc.file };
   }));
 });
 for (const course of courses) {

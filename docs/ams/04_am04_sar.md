@@ -46,3 +46,9 @@ transistor/提取步骤依赖你的可用 PDK、模型和电路。没有数据�
 提交：十次手算与实际比较台账、非边界输入码检查、门限附近的不确定区、每次视图替换的延迟/负载/码变化。检查延迟增加时先错哪位、offset 如何移动转换门限，以及只加 maxstep 精度为何不能补救不够的真实等待。
 
 完成目标是一个小 SAR 验证案例。晶体管级噪声、亚稳态、kickback、参考扰动、DNL/INL 需要对应统计/电路测试；本课理想 floor 验证不自动覆盖这些性能。
+### AM04 参考与实验
+
+- **选读与定位**：K03/K17/K19 · Own SAR 联验；P FSM 方法：[EECS151 ASIC Lab 3：FSM Style Guide](https://eecs151.org/asic/lab3/docs/fsm-style-guide/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：借状态/输出拥有权，SAR 每位 WAIT_SETTLE/decision 的模拟条件依自己的电路。
+- **回到本课做**：AMS SAR 练习：在逐块 view 替换前预测 trial→settled→decision；先数字模型，再 DAC/比较器电路。
+- **留下证据**：每位 decision 台账、逐实例绑定与行为/电路差异表。将预测、实际观察和结论写入 [本方向学习表](10_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。

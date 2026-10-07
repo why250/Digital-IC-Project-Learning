@@ -11,6 +11,8 @@ test('all 94 lessons have unique IDs, a lecture and an actual rendered anchor', 
     const doc = documents.find(item => item.file === lesson.file)!;
     const fragment = lesson.url.split('#')[1];
     assert.ok(renderDocument(doc).includes(`id="${fragment}"`), lesson.id);
+    const readingFragment = lesson.readingUrl.split('#')[1];
+    assert.ok(renderDocument(doc).includes(`id="${readingFragment}"`), `${lesson.id} reading link`);
   }
   assert.equal(courses.length, 6);
 });

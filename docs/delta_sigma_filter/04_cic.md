@@ -49,6 +49,13 @@ raw 输出 CODE 的归一化值为 CODE/4096，即可视为 signed14/F12，不�
 
 物理 bit 输入没有 0 样本；可比较两条合法码流（一条全 −1，一条只在 n=0 改为 +1），输出差应为上述冲激响应的两倍。数值 core 可以独立测试冲激，但顶层仍坚持二电平映射。
 
+### DF04 参考与实验
+
+- **选读与定位**：K02/K14/K16 · Own CIC；S RTL 语义：[EECS151 ASIC Lab 1：SystemVerilog Primer](https://eecs151.org/asic/lab1/docs/pg4-verilog/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：只读非阻塞赋值与位宽；CIC modulo 正确性仍由自己的数学/整数参考证明。
+- **回到本课做**：EXP-DF-CHAIN：先预测积分器同拍更新与绕回，再与三个 boxcar 卷积比较；注入饱和或旧值串接。
+- **留下证据**：递归/卷积/modulo 对照与 sample phase 台账。将预测、实际观察和结论写入 [本方向学习表](11_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ## 实验与验收
 
 用三个长度 16 的 boxcar 卷积形成独立 FIR 参考，与递归 CIC 和 14 位 modulo 版本比较，固定相位。长时间全 +1 强制积分器多次绕回，comb 输出仍正确。再故意改成饱和或旧值串接，观察失败。

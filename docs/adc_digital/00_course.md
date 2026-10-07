@@ -12,28 +12,30 @@
 
 ## 二十课目录
 
+课号链接直接进入该课“参考与实验”：在原知识点旁选择具体官方阅读，带着问题回来完成原练习，再记录证据。P/S/O 表示首选/第二视角/可选，Own 保留本项目专属契约。
+
 | 编号 | 主题 | 核心产物 |
 |---|---|---|
-| AD01 | ADC 数字模块地图与接口 | 架构/控制/数据/时钟表 |
-| AD02 | SAR 逐次逼近控制 | trial/comparator/结果 FSM |
-| AD03 | Flash 温度计编码与 bubble | 编码参考和错误分类 |
-| AD04 | Pipeline 冗余与数字校正 | residue 权重及样本对齐 |
-| AD05 | ΔΣ 多比特反馈与 DEM | DWA 选择和环路延迟预算 |
-| AD06 | 多相采样调度与时钟边界 | 名义相位、物理时钟要求 |
-| AD07 | 转换延迟、标签与重排 | 按采样时刻合并的通路 |
-| AD08 | CDC、FIFO、复位与吞吐 | 数据一致性和重启协议 |
-| AD09 | 时间交织采样模型 | 统一时间轴和误差模型 |
-| AD10 | Offset/gain 周期误差与杂散 | DFT 失配系数和频率预测 |
-| AD11 | Timing skew 与随机 jitter | 静态误差与噪声预算 |
-| AD12 | 带宽失配与可辨识性 | 输入条件与校准范围 |
-| AD13 | 已知 DC 的 offset/gain 校准 | 两点测量及系数求解 |
-| AD14 | 已知正弦的相位/时间估计 | 拟合、参考通道和置信边界 |
-| AD15 | 定点校正与延迟对齐 | offset/gain RTL 与 timing 模型 |
-| AD16 | 后台校准、收敛与业务影响 | 条件、限制及失效用例 |
-| AD17 | 原子系数、版本与诊断 | frame 边界提交和快照 |
-| AD18 | 行为模型、FFT 与覆盖 | 参数/故障/指标矩阵 |
-| AD19 | RTL 回归、综合与 STA | 顺序、数值与路径证据 |
-| AD20 | 集成、功耗和交付评审 | 架构选择与证据包 |
+| [AD01](01_architectures.md#ad01-参考与实验) | ADC 数字模块地图与接口 | 架构/控制/数据/时钟表 |
+| [AD02](01_architectures.md#ad02-参考与实验) | SAR 逐次逼近控制 | trial/comparator/结果 FSM |
+| [AD03](01_architectures.md#ad03-参考与实验) | Flash 温度计编码与 bubble | 编码参考和错误分类 |
+| [AD04](01_architectures.md#ad04-参考与实验) | Pipeline 冗余与数字校正 | residue 权重及样本对齐 |
+| [AD05](02_timing_data.md#ad05-参考与实验) | ΔΣ 多比特反馈与 DEM | DWA 选择和环路延迟预算 |
+| [AD06](02_timing_data.md#ad06-参考与实验) | 多相采样调度与时钟边界 | 名义相位、物理时钟要求 |
+| [AD07](02_timing_data.md#ad07-参考与实验) | 转换延迟、标签与重排 | 按采样时刻合并的通路 |
+| [AD08](02_timing_data.md#ad08-参考与实验) | CDC、FIFO、复位与吞吐 | 数据一致性和重启协议 |
+| [AD09](03_interleaving.md#ad09-参考与实验) | 时间交织采样模型 | 统一时间轴和误差模型 |
+| [AD10](03_interleaving.md#ad10-参考与实验) | Offset/gain 周期误差与杂散 | DFT 失配系数和频率预测 |
+| [AD11](03_interleaving.md#ad11-参考与实验) | Timing skew 与随机 jitter | 静态误差与噪声预算 |
+| [AD12](03_interleaving.md#ad12-参考与实验) | 带宽失配与可辨识性 | 输入条件与校准范围 |
+| [AD13](04_calibration.md#ad13-参考与实验) | 已知 DC 的 offset/gain 校准 | 两点测量及系数求解 |
+| [AD14](04_calibration.md#ad14-参考与实验) | 已知正弦的相位/时间估计 | 拟合、参考通道和置信边界 |
+| [AD15](04_calibration.md#ad15-参考与实验) | 定点校正与延迟对齐 | offset/gain RTL 与 timing 模型 |
+| [AD16](04_calibration.md#ad16-参考与实验) | 后台校准、收敛与业务影响 | 条件、限制及失效用例 |
+| [AD17](05_integration.md#ad17-参考与实验) | 原子系数、版本与诊断 | frame 边界提交和快照 |
+| [AD18](05_integration.md#ad18-参考与实验) | 行为模型、FFT 与覆盖 | 参数/故障/指标矩阵 |
+| [AD19](05_integration.md#ad19-参考与实验) | RTL 回归、综合与 STA | 顺序、数值与路径证据 |
+| [AD20](05_integration.md#ad20-参考与实验) | 集成、功耗和交付评审 | 架构选择与证据包 |
 
 ## 讲义与辅助资料
 

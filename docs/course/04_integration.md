@@ -25,6 +25,13 @@ W1C 位发生“新事件”和“软件清除”同周期时必须指定优先�
 
 地址表要包含有效位、默认值、非法访问行为、原子范围和副作用。模拟电路尤其需要知道 active 的上电/复位状态、断使能含义以及生效时机，而不只是寄存器地址。
 
+### 16 参考与实验
+
+- **选读与定位**：K04 · P 接口方法：[EECS151 FPGA Lab 4：Ready-Valid Interfaces](https://eecs151.org/fpga/lab4/docs/pg3-readyvalid/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：只读同域 valid/ready 的接受与保持；映射到 register_bank 的一次性副作用。
+- **回到本课做**：配置项目练习：人为停顿请求，预测 W1C/commit 执行次数，再用事务台账防止重复写。
+- **留下证据**：接口保持图、寄存器副作用次数与非法访问表。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 将第 23 节的地址表画到上述分层图上。分别推演非法地址、RO 写入、保留位写 1、W1C 与新事件并发、valid 等待的行为。验收要求所有异常有确定结果，适配器的 stall 不会导致重复写入。
@@ -42,6 +49,13 @@ FIFO 吸收短期生产/消费速率差，不能解决无限期平均生产速�
 例子：8 条命令每 1 μs 到达一条，消费者每 2 μs 取一条，初始为空、第一次读取在 2 μs，并假设每次到达先入队、之后再执行同时间读取。瞬间峰值占用可达 5，而读取后的占用峰值是 4；深度必须按事件排序和接口接受语义计算，不能只看平均速率。
 
 异步 FIFO 是另一种模块：读写域独立，常用 Gray 指针跨域、同步后的指针判断满/空，且 Gray 总线还需满足物理延迟/偏斜约束。同步 FIFO 的 count 不能直接跨域共用。
+
+### 17 参考与实验
+
+- **选读与定位**：K04/K09 · P 首选：[EECS151 FPGA Lab 4：FIFO](https://eecs151.org/fpga/lab4/docs/pg5-fifo/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：只读 FIFO full/empty 与接口语义；FPGA 存储资源不等于 ASIC SRAM 宏。
+- **回到本课做**：EXP-SRAM-BUFFER 前置：深度 4 reference queue 预测满空/同沿读写，随后比较同步 RAM 增加读延迟的后果。
+- **留下证据**：队列 oracle、占用/接受表与 RAM 延迟契约。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
 
 ### 练习与验收
 
@@ -65,6 +79,13 @@ APB 是低带宽寄存器访问总线，不是学习数字 RTL 的前置条件�
 | ACCESS 完成 | 1 | 1 | 1 | 读结果有效或一次写入 |
 
 适配器向寄存器层只发一次实际操作，不在等待周期重复执行 commit/W1C。可以选择“更新队列满时 APB 等待”，或“立即完成总线访问但状态报告 busy-reject”；需要解释总线完成与模拟应用完成的区别。
+
+### 18 参考与实验
+
+- **选读与定位**：K04 · O 接口类比：[EECS151 FPGA Lab 4：Ready-Valid Interfaces](https://eecs151.org/fpga/lab4/docs/pg3-readyvalid/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：只比较“接受条件”，不把 ready-valid 页当作 APB 规范；本课 PSEL/PENABLE/PREADY 时序保持独立。
+- **回到本课做**：APB 选修：画两个 wait cycle 后完成的写，注入重复 commit，检查 ACCESS 完成仅一次副作用。
+- **留下证据**：APB 状态波形与总线完成/模拟应用的事件对照。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
 
 ### 练习与验收
 

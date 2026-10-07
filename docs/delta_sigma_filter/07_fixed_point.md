@@ -48,6 +48,13 @@ DC 常数 +1 经过已归一化的全链，应约为输出整数码 2^20=1048576
 
 实际误差往往低于粗界，但必须重新评估频响；必要时增系数位宽/设计裕量、重做 DC 修正并更新全部乘积格式。不同位置的裁位/舍入噪声经后级处理，不能一概按均匀白噪声预算。
 
+### DF07 参考与实验
+
+- **选读与定位**：K05/K14/K16 · Own 数值契约；S 验证方法：[EECS151 ASIC Lab 2：Testbenches](https://eecs151.org/asic/lab2/docs/pg3-testbenches/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：借独立 reference 思路；浮点、量化系数、整数、RTL 四层不能互相抄算法当作唯一 oracle。
+- **回到本课做**：EXP-DF-CHAIN：先预测正负 tie、系数 L1、长时间 wrap 和 warm-up，再逐样本对齐四层。
+- **留下证据**：格式/裁位依据、系数 manifest、saturation 计数与差异定位。将预测、实际观察和结论写入 [本方向学习表](11_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ## 实验与验收
 
 覆盖正负极值、半单位、DC、交替码、长时间 CIC 绕回、系数 sum/L1、随机合法码流和 startup。比较四层模型的 sample、频响、噪声及 saturation 次数。验收要求每个裁位有理由、每个指标有证据。答案见 [DF07 参考](10_answers.md)。

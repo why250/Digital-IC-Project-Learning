@@ -14,20 +14,22 @@
 
 ## 课程与产物
 
+课号链接直接进入该课“参考与实验”：在原知识点旁选择具体官方阅读，带着问题回来完成原练习，再记录证据。P/S/O 表示首选/第二视角/可选，Own 保留本项目专属契约。
+
 | 课号 | 主题 | 练习产物 |
 |---|---|---|
-| TD01 | 架构、编码与重构核 | 门控/保持/求和结构图 |
-| TD02 | ZOH、RZ、镜像与模拟滤波 | 连续时间频谱和下垂 |
-| TD03 | 插值、抗镜像与多相 FIR | 1→4插值、系数与相位表 |
-| TD04 | NCO/DDS、幅度与定点 | 相位累加器与误差表 |
-| TD05 | 分路、frame 与样本身份 | x[4k+i]交付台账 |
-| TD06 | 预加载、settling 与门控 | code-load/gate-on/off时间轴 |
-| TD07 | FIFO、CDC、欠载与停启 | 缓冲与安全状态契约 |
-| TD08 | offset/gain/skew/脉宽失配 | 单误差频谱及适用条件 |
-| TD09 | 已知源前台估计与校正 | 系数、精度和可辨识性 |
-| TD10 | 量化、舍入、饱和与版本 | 整数参考与原子提交 |
-| TD11 | 分段/温度计编码、DEM、毛刺 | 选择、译码和开关活动 |
-| TD12 | 验证、综合与接口评审 | 顺序/数值/波形证据 |
+| [TD01](01_reconstruction.md#td01-参考与实验) | 架构、编码与重构核 | 门控/保持/求和结构图 |
+| [TD02](01_reconstruction.md#td02-参考与实验) | ZOH、RZ、镜像与模拟滤波 | 连续时间频谱和下垂 |
+| [TD03](01_reconstruction.md#td03-参考与实验) | 插值、抗镜像与多相 FIR | 1→4插值、系数与相位表 |
+| [TD04](01_reconstruction.md#td04-参考与实验) | NCO/DDS、幅度与定点 | 相位累加器与误差表 |
+| [TD05](02_delivery.md#td05-参考与实验) | 分路、frame 与样本身份 | x[4k+i]交付台账 |
+| [TD06](02_delivery.md#td06-参考与实验) | 预加载、settling 与门控 | code-load/gate-on/off时间轴 |
+| [TD07](02_delivery.md#td07-参考与实验) | FIFO、CDC、欠载与停启 | 缓冲与安全状态契约 |
+| [TD08](03_calibration.md#td08-参考与实验) | offset/gain/skew/脉宽失配 | 单误差频谱及适用条件 |
+| [TD09](03_calibration.md#td09-参考与实验) | 已知源前台估计与校正 | 系数、精度和可辨识性 |
+| [TD10](03_calibration.md#td10-参考与实验) | 量化、舍入、饱和与版本 | 整数参考与原子提交 |
+| [TD11](04_implementation.md#td11-参考与实验) | 分段/温度计编码、DEM、毛刺 | 选择、译码和开关活动 |
+| [TD12](04_implementation.md#td12-参考与实验) | 验证、综合与接口评审 | 顺序/数值/波形证据 |
 
 讲义：[TD01–TD04](01_reconstruction.md)、[TD05–TD07](02_delivery.md)、[TD08–TD10](03_calibration.md)、[TD11–TD12](04_implementation.md)。另有 [结课规格](05_project.md)、[参考答案](06_answers.md)、[记录表](07_workbook.md)。其他方向见 [数模混合项目建议](../mixed_signal/10_project_choices.md)。
 

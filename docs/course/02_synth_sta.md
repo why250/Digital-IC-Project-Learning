@@ -23,6 +23,13 @@ SPICE 模型描述器件；标准单元 Liberty 描述已经设计好的门和�
 
 驱动更大的单元常可减小本级输出延迟，但增加前级负载、面积和动态功耗，未必改善整条路径。多级缓冲器和逻辑重构也可能更合适。
 
+### 07 参考与实验
+
+- **选读与定位**：K01/K06 · P 首选：[Cornell ECE5745 S01：ASIC Flow Front-End](https://cornell-ece5745.github.io/ece5745-S01-front-end/)。来源/边界：[C5745-S23 / S01-2023](../references/cornell_ece5745.md)。
+- **带着问题读**：只读 Standard-Cell Libraries / 逻辑、时序和物理视图；同一个 NAND 为什么需要多种视图？
+- **回到本课做**：EXP-SPI-BASE：对自己的 tutorial.lib 只记录单位/角/弧与负载解释，不复制库；连接本课 MOS/Liberty/LEF 区别。
+- **留下证据**：单元视图用途表和 slew/load/PVT 假设卡。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 解释“输出负载增加 → 延迟与 slew 变化 → 下一级延迟也变化”的链条。到服务器只读查阅教学库的单位和角定义，记录属性名称与数值，不复制库正文到 Git。验收要求说明 MOS 模型、Liberty、LEF 三者不能互相替代。
@@ -38,6 +45,13 @@ SPICE 模型描述器件；标准单元 Liberty 描述已经设计好的门和�
 这是可观察行为优化：不是“综合漏了两位”，也不是“RTL 声明多少变量就一定需要多少硬件”。状态编码、常量传播、未使用逻辑和公共逻辑都会改变实际数量。
 
 现有映射结果：37 fflopd、56 inv1、171 nand2、13 nor2，共 277 单元。MUX 和加法比较逻辑可以分解为基础门，因此没有名为 MUX 的单元不代表没有选择功能。教学库面积 440.500 只用于比较当前模型内的实现。
+
+### 08 参考与实验
+
+- **选读与定位**：K06 · P 首选：[EECS151 ASIC Lab 2：Synthesis](https://eecs151.org/asic/lab2/docs/pg6-synthesis-intro/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：只读 RTL→technology mapping 和报告用途；脚本依赖保持本项目 Genus 环境。
+- **回到本课做**：EXP-SPI-BASE：追踪 div_count 的 Q→逻辑→D，解释 39 个声明存储位到 37 个映射 FF 的裁剪。
+- **留下证据**：网表路径草图、单元分类和裁剪依据；不要求新版本始终等于 37。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
 
 ### 练习与验收
 
@@ -69,6 +83,13 @@ setup 检查下一次捕获前能否到达；hold 检查本次捕获后是否太
 
 通过报告时要依次确认起点、终点、捕获沿、路径类型、单位、约束、cell/net delay、arrival、required、slack。current timing.rpt 是 max/setup 报告；本项目没有已验证的 min/hold 报告，不据此宣称 hold 通过。
 
+### 09 参考与实验
+
+- **选读与定位**：K07 · S 第二视角：[Rabaey DIC 第 2 版章节索引](https://icbook.eecs.berkeley.edu/resources/powerpoint-slides)。来源/边界：[RABAEY-DIC2](../references/berkeley_ee141.md)。
+- **带着问题读**：按章节索引选 Ch7 Sequential 与 Ch10 Timing，只补电路时序视角；公式与符号以本课定义为准。
+- **回到本课做**：EXP-SDC-HOLD：先手算正 skew 对 setup/hold 的相反影响，再审查已有 setup 报告和未获得的 min/hold。
+- **留下证据**：两条到达/要求时间线与 max/min 证据分栏。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 手算上述两类 slack。然后保持教学输入预算不变，把周期假想改为 5 ns，估计同一路径 slack，并解释为什么“组合逻辑只有 0.461 ns”仍不足以满足预算。此处是固定路径估算，真实重综合后的路径与延迟可能变化。
@@ -97,6 +118,13 @@ max/min 分别服务于最晚与最早到达分析。时钟 transition 是 CK �
 为外部源同步接口选择 generated/virtual clock、定义波形与采样沿，需要与实际的内部捕获结构一致。不能仅在 SCLK 端口创建一个时钟，就以为系统时钟捕获的 MISO 已正确建模。
 
 多周期路径用于功能上确实允许较晚捕获的路径；false path 用于确实不参与相应同步检查的路径。异常要有结构、协议和验证依据，并检查 max/min 关系。多周期 setup 异常往往还需相应 hold 处理，但具体数值依赖参考边沿与工具语义，不能照搬口诀。
+
+### 10 参考与实验
+
+- **选读与定位**：K07 · P 流程方法：[Cornell ECE5745 Tutorial 4：ASIC Tools](https://cornell-ece5745.github.io/ece5745-tut4-asic-tools/)。来源/边界：[C5745-S23](../references/cornell_ece5745.md)。
+- **带着问题读**：选约束与 timing report 的相关段落；公开工具例子不是本项目 SPI 板级预算。
+- **回到本课做**：EXP-SDC-HOLD：给每条 input/output delay、load、uncertainty 写来源；再按 K07 补充设计一个 min 场景。
+- **留下证据**：SDC 逐行假设表、器件/互连预算与例外依据。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
 
 ### 练习与验收
 

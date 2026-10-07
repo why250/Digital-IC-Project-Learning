@@ -20,6 +20,13 @@
 | adc_req/response | 一次测量协议 | acquisition、转换时间、有效数据窗口 |
 | fault | 请求进入故障策略 | 同步/异步来源和允许响应时间 |
 
+### 25 参考与实验
+
+- **选读与定位**：K03/K08/K13 · Own 主导；S 数字抽象：[MIT 6.004 单元 2：The Digital Abstraction](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c2/)。来源/边界：[M6004-S17](../references/mit_6004.md)。
+- **带着问题读**：只取逻辑抽象的适用条件；ready/valid 的模拟意义、单位和采样方式仍由真实接口规格给出。
+- **回到本课做**：数模接口练习：列八根信号的单位、clock 域、稳定窗口与确认事件，区分输入电平和一次完成。
+- **留下证据**：数模接口卡和数字/模拟假设分栏。将预测、实际观察和结论写入 [本方向学习表](09_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 为你熟悉的 ADC、DAC 或偏置模块写至少八根接口的契约，区分稳定、有效和确认。没有真实电路数据时写“教学假设”，不要将估计值伪装成硅片指标。验收要求每根状态输入都有采样/CDC 方式。
@@ -35,6 +42,13 @@
 明确计时原点：在边沿 n0 拉高 enable，若等待 N 个完整周期，最早在 n0+N 的边沿转下一阶段。进入状态时计数器清零，避免把旧计数带进下一次启动。
 
 例：50 MHz、BIAS_MIN=100、REF_MIN=250，则最小等待分别为 2 μs、5 μs。ref_ready 在 8 μs 才有效，就不能只按 5 μs 提前进入 READY。具体偏置/参考顺序依电路依赖关系调整。
+
+### 26 参考与实验
+
+- **选读与定位**：K03/K13 · Own 主导；S FSM 方法：[EECS151 ASIC Lab 3：FSM Style Guide](https://eecs151.org/asic/lab3/docs/fsm-style-guide/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：借状态与输出拥有权的分工；MIN/ready/MAX 三条件由自己的启动契约决定。
+- **回到本课做**：上电 sequencer 练习：预测 ready 早/晚/不来/抖动，独立延迟模型检查首次合法 READY 边沿。
+- **留下证据**：四组波形预测、状态图与等待边界表。将预测、实际观察和结论写入 [本方向学习表](09_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
 
 ### 练习与验收
 
@@ -52,6 +66,13 @@
 
 同步控制器只有时钟运行、输入被识别后才能反应。如果电源故障时 clk 可能消失，不能依赖同一域的同步状态机保证关断；需要模拟互锁或保持供电/时钟的监督路径，并独立给出物理响应要求。
 
+### 27 参考与实验
+
+- **选读与定位**：K03/K08/K13 · Own 主导；S 复位视角：[MIT 6.004 单元 5：Sequential Logic](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c5/)。来源/边界：[M6004-S17](../references/mit_6004.md)。
+- **带着问题读**：只补同步状态清理；brownout 安全输出、恢复顺序与跨域复位仍须单独定义。
+- **回到本课做**：故障练习：在 sample_valid 同沿插入 brownout，预测哪些结果丢弃、哪些输出先钳位。
+- **留下证据**：故障优先级、复位恢复/epoch 台账及模拟恢复条件。将预测、实际观察和结论写入 [本方向学习表](09_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 列出启动中、测量中、校准中和 READY 中 brownout 的输出与恢复行为。注入故障与 sample_valid 同周期，规定结果是被接受还是丢弃。验收要求故障优先，不能把收到旧结果当作恢复完成。
@@ -67,6 +88,13 @@
 诊断记录 fault_code、失败阶段和必要的请求版本。sticky 状态清除与新事件并发时新事件优先。读状态无副作用，便于软件重复诊断。
 
 例：10 μs 超时、20 ns 周期对应 500 个周期；计数表示已等待 0…500 周期时需要 9 位。若实现采用其他计数定义，应推导相同的截止边沿，不能只复制常数。
+
+### 28 参考与实验
+
+- **选读与定位**：K03/K05 · Own 主导；S 性质方法：[EECS151 ASIC Lab 4：Formal Verification](https://eecs151.org/asic/lab4/docs/pg3-formal/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：选 safety/liveness 与环境假设；ready 永不来时为什么不能无条件证明正常完成？
+- **回到本课做**：watchdog 练习：预测 MAX−1/MAX/MAX+1 的竞争，写一个有界退出性质与允许的 timeout 结果。
+- **留下证据**：截止边界表、性质/assumption 清单与可达性检查设计。将预测、实际观察和结论写入 [本方向学习表](09_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
 
 ### 练习与验收
 

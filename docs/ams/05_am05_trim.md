@@ -45,6 +45,13 @@ RNE 为 round to nearest ties to even，负数也按数学定义处理。该规�
 | 供电故障导致不能安全恢复 | 进入FAULT，按模拟安全策略处理输出 |
 | 噪声使两块交替通过/失败 | 有限重试后退出，不能无限循环 |
 
+### AM05 参考与实验
+
+- **选读与定位**：K05/K13/K15/K19 · Own trim 联验；S 性质方法：[EECS151 ASIC Lab 4：Formal Verification](https://eecs151.org/asic/lab4/docs/pg3-formal/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：只借性质与环境假设；证明 controller 不等于证明 plant 单调、噪声边界或求解收敛。
+- **回到本课做**：AMS trim 练习：先为 trial/committed/abort 写 monitor，预测五组收敛/失败轨迹，联验时另核模拟恢复。
+- **留下证据**：两块确认、状态/电压轨迹、assumptions 与数值收敛/模型范围。将预测、实际观察和结论写入 [本方向学习表](10_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ## 验收
 
 提交零噪声收敛、噪声运行、端点不可达、超时和取消恢复五组台账；每个 commit 都有两块验证证据。记录 `trial_code` 与 `committed_code` 的区别，以及失败后节点是否重新稳定。

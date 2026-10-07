@@ -37,6 +37,13 @@ controller 顺序为 LOAD→WAIT_SETTLE→REQUEST→WAIT_RESPONSE→DONE。接�
 
 该角落只是明确的练习假设，不是实际 PDK corner。若 DAC 有延迟、slew、额外极点、glitch 或负载，重新预算；不能把一阶 RC 时间直接写成真实 ADC 的 SDC 或签核结论。
 
+### AM03 参考与实验
+
+- **选读与定位**：K13/K18/K19 · Own settling；S 接口方法：[EECS151 FPGA Lab 4：Ready-Valid Interfaces](https://eecs151.org/fpga/lab4/docs/pg3-readyvalid/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：只借保持/接受/确认的语义；采样、ADC 延迟、settling 不由 ready-valid 页定义。
+- **回到本课做**：EXP-AM-SETTLE：先比较四个等待时间的残差/码，记录 sample_time 与 response_time，再注入迟到 id。
+- **留下证据**：RC/量化表、id/version 台账和有效采样窗口。将预测、实际观察和结论写入 [本方向学习表](10_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ## 验收
 
 交付四个等待时间的电压/残差/量化表，标出 floor 边界效应；采样与应答延迟必须分别测量。完成忙时拒绝、身份检查、超时与复位台账。用有效 id、sample_time、code_version 证明每个结果属于哪次改码。

@@ -5,3 +5,5 @@
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 /* Multi-column reference tables stay readable through local horizontal scrolling. */
 .prose table:has(th:nth-child(4)) th,.prose table:has(th:nth-child(4)) td{min-width:140px}
+
+.lesson-readings{font-size:12px;margin-bottom:24px}.lesson-readings p{margin:8px 0 12px}.lesson-reading-links{display:flex;flex-wrap:wrap;gap:8px 16px}.lesson-readings .lesson-reading-links{display:grid;gap:8px}.record-top .lesson-reading-links{align-items:center}

@@ -21,6 +21,13 @@ DAC 教学编码为 `Vtarget = 2 V × code / 256`，LSB=7.8125 mV，255 的终�
 3. 阶跃时刻定义为 DAC 实际目标改变的时刻 t0，计算 0→128 后 t0+100 ns、500 ns 的电压，以及达到 1% 终值误差的时间。
 4. 计数模式求跳变前电容未完全稳定时的一般表达式：`Vc(t)=Vnew+(Vold_node−Vnew)exp(−(t−t0)/τ)`。Vold_node 是当时节点电压，不强行用前一码的理想终值。
 
+### AM01 参考与实验
+
+- **选读与定位**：K02/K19 · Own AMS；S 顺序逻辑：[MIT 6.004 单元 5：Sequential Logic](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c5/)。来源/边界：[M6004-S17](../references/mit_6004.md)。
+- **带着问题读**：只补 counter/enable/reset 的数字更新；实际 config/view、DAC 与 RC 仍按本课 Virtuoso 流程。
+- **回到本课做**：EXP-AM-SETTLE：先画 8 DFF 和 CE，再预测 0→128 的 RC；故意绑错 view/bit 检查独立电压表。
+- **留下证据**：寄存器图、绑定表、数字边沿→DAC 目标→RC 的时间线。将预测、实际观察和结论写入 [本方向学习表](10_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ## Virtuoso 实验步骤
 
 1. 按 [共用流程](07_setup.md)建立个人教学库，先分别检查 counter 的数字波形和 DAC 的码值定义，再制作 symbol。

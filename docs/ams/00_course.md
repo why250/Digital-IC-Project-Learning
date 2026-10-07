@@ -12,14 +12,16 @@ AM04 前读 [SAR 基础](../adc_digital/01_architectures.md)，AM05 前读 [测�
 
 ## 课程与产物
 
+课号链接直接进入该课“参考与实验”：在原知识点旁选择具体官方阅读，带着问题回来完成原练习，再记录证据。P/S/O 表示首选/第二视角/可选，Own 保留本项目专属契约。
+
 | 课次 | 讲义 | 重点 | 必交产物 | 时间 |
 |---|---|---|---|---|
-| AM01 | [计数器→DAC→RC](01_am01_binding.md) | config、层次绑定、两类时间机制 | 绑定表、混合波形、RC 数值表 | 8–12 h |
-| AM02 | [logic ↔ electrical](02_am02_interfaces.md) | 阈值、供电、输出阻抗、边沿和 X/Z | 桥参数表、阈值时间、负载/供电对照 | 8–12 h |
-| AM03 | [settling 与采样](03_am03_settling.md) | code-load、等待、量化、有效应答 | 早/晚采样误差表、请求应答台账 | 8–12 h |
-| AM04 | [SAR 与视图替换](04_am04_sar.md) | trial/decision、比较有效窗口、电路替换 | 十次判决表、边界测试、替换差异表 | 12–18 h |
-| AM05 | [trim 校准闭环](05_am05_trim.md) | 可观测性、搜索、平均、timeout/恢复 | 收敛轨迹、失败矩阵、commit 记录 | 12–18 h |
-| AM06 | [转换器联合验证](06_am06_converter.md) | CT ΔΣ 抽取或四路 DAC 重构 | 连续时间/码流证据与误差归因 | 16–24 h |
+| [AM01](01_am01_binding.md#am01-参考与实验) | [计数器→DAC→RC](01_am01_binding.md) | config、层次绑定、两类时间机制 | 绑定表、混合波形、RC 数值表 | 8–12 h |
+| [AM02](02_am02_interfaces.md#am02-参考与实验) | [logic ↔ electrical](02_am02_interfaces.md) | 阈值、供电、输出阻抗、边沿和 X/Z | 桥参数表、阈值时间、负载/供电对照 | 8–12 h |
+| [AM03](03_am03_settling.md#am03-参考与实验) | [settling 与采样](03_am03_settling.md) | code-load、等待、量化、有效应答 | 早/晚采样误差表、请求应答台账 | 8–12 h |
+| [AM04](04_am04_sar.md#am04-参考与实验) | [SAR 与视图替换](04_am04_sar.md) | trial/decision、比较有效窗口、电路替换 | 十次判决表、边界测试、替换差异表 | 12–18 h |
+| [AM05](05_am05_trim.md#am05-参考与实验) | [trim 校准闭环](05_am05_trim.md) | 可观测性、搜索、平均、timeout/恢复 | 收敛轨迹、失败矩阵、commit 记录 | 12–18 h |
+| [AM06](06_am06_converter.md#am06-参考与实验) | [转换器联合验证](06_am06_converter.md) | CT ΔΣ 抽取或四路 DAC 重构 | 连续时间/码流证据与误差归因 | 16–24 h |
 
 合计 64–96 小时，AM06 选一条支线；每周 6–8 小时约 8–16 周。首次安装、PDK 适配和大规模晶体管仿真不计入该预算。已有知识可以复用，不能用阅读进度代替实验掌握。
 

@@ -16,6 +16,13 @@ acquisition 时间满足输入电容充电等模拟要求；conversion 时间来
 
 教学计时：acquisition=400 ns，50 MHz 下需 20 周期；最大转换响应等待 4 μs 对应 200 周期。异步接口同步/握手开销单独计入，不在转换器的典型时间里隐藏。
 
+### 29 参考与实验
+
+- **选读与定位**：K04/K13/K18 · Own 主导；S 接口方法：[EECS151 FPGA Lab 4：Ready-Valid Interfaces](https://eecs151.org/fpga/lab4/docs/pg3-readyvalid/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：借 valid/data 保持与接受思想；sample_time 与 response_time 的差异由本 ADC 测量协议决定。
+- **回到本课做**：测量练习：预测早/晚/重复/迟到 response，独立 request ledger 检查每份结果的 id/version。
+- **留下证据**：采样、应答与确认时间线和一请求最多一发布台账。将预测、实际观察和结论写入 [本方向学习表](09_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 画出 request、sample switch、conversion、valid/data/id、ack 的时间线。测试早/晚/重复/迟到响应和转换超时。验收要求每个有效请求最多发布一次结果，结果具有正确配置版本。
@@ -32,6 +39,13 @@ active_code 同沿更新后，实际输出可能先出现毛刺再稳定。最�
 
 例：要求至少 750 ns，名义周期 20 ns，需要 ceil(750/20)=38 个完整周期，即 760 ns。若最快允许 clk 为 51 MHz，38 周期约 745.1 ns 已不足，应至少 39 周期或调整预算。
 
+### 30 参考与实验
+
+- **选读与定位**：K13/K18 · Own 主导；S 状态方法：[MIT 6.004 单元 6：Finite State Machines](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c6/)。来源/边界：[M6004-S17](../references/mit_6004.md)。
+- **带着问题读**：只借状态保存与转移；数字 code_applied 不等于模拟 settled。
+- **回到本课做**：EXP-AM-SETTLE 前置：commit 后继续改 shadow，预测当前快照和禁止采样窗口，接 AM03 的 RC 检查。
+- **留下证据**：commit/apply/settled/sample 四事件表与等待预算。将预测、实际观察和结论写入 [本方向学习表](09_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 从提交、应用、settling 完成到采样标出四个不同事件。测试等待期间再次写 shadow，不应重置当前快照或把新码用于旧标签的样本。验收要求测量不发生在有效码改变后的禁用窗口内。
@@ -46,6 +60,13 @@ quiet window 是模拟敏感期间的数字活动约束，例如采样孔径附�
 
 若静默时间包含模拟稳定过程，完成确认不能只检查数字 enable=0。模拟端还需给出 settling/隔离条件。真正关钟需要可靠门控与唤醒路径，首版用寄存器使能减少功能切换，保留时钟。
 
+### 31 参考与实验
+
+- **选读与定位**：K11/K13 · Own 主导；S CMOS 视角：[Rabaey DIC 第 2 版章节索引](https://icbook.eecs.berkeley.edu/resources/powerpoint-slides)。来源/边界：[RABAEY-DIC2](../references/berkeley_ee141.md)。
+- **带着问题读**：按电容切换与时钟章节选读；quiet 约束哪些活动、哪些耦合必须另测？
+- **回到本课做**：quiet-window 练习：在 400 ns 窗口注入 SPI/pending/calibration，逐项预测等待、拒绝或缓存。
+- **留下证据**：禁止/允许活动表与噪声/settling 的独立证据需求。将预测、实际观察和结论写入 [本方向学习表](09_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 为一个 400 ns 采样窗口规定禁止切换的输出和允许活动的逻辑。注入 SPI 写入、pending commit 和校准请求，检查它们等待、拒绝或正常缓存的规则。验收要求不会因为“quiet”信号为 1 就未经证据宣称模拟噪声达标。
@@ -59,6 +80,13 @@ quiet window 是模拟敏感期间的数字活动约束，例如采样孔径附�
 结果消费者更慢时选择背压、有限 FIFO 或丢弃并计数。不能无声覆盖未读结果。校准优先保证每个平均块收到确定数量、同一 trim 版本的样本，因此首版一次只允许一个未决 ADC 请求。
 
 标签位宽和回绕也要考虑：有限 transaction_id 不是永久唯一。取消操作后需要 drain/cancel ack 或响应 epoch 重新同步，避免旧响应在编号重复后误匹配。结果 FIFO 中的数据也携带版本，而不只保存 ADC 数值。
+
+### 32 参考与实验
+
+- **选读与定位**：K04/K09/K18 · P 性能基础；Own 测量预算：[MIT 6.004 单元 7：Performance Measures](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c7/)。来源/边界：[M6004-S17](../references/mit_6004.md)。
+- **带着问题读**：只读 latency 与 throughput 区别，分别套入 sample、conversion、response、平均块。
+- **回到本课做**：吞吐练习：消费者暂停时先算峰值积压和块时间，再用独立队列验证恢复顺序。
+- **留下证据**：吞吐/超时统一预算、FIFO 容量与停顿上限。将预测、实际观察和结论写入 [本方向学习表](09_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
 
 ### 练习与验收
 

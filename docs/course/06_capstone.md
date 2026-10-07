@@ -70,6 +70,13 @@ MOSI 03 00 00：读 ACTIVE_CODE，MISO = 00 0A BC
 
 先提交 0xABC，再把 shadow 改成 0x123，最后允许 safe_update：这次 active 仍应是 0xABC，不能引用已经改变的 shadow。
 
+### 23 参考与实验
+
+- **选读与定位**：K03/K04/K05 · P 项目方法：[Cornell ECE5745 S01：ASIC Flow Front-End](https://cornell-ece5745.github.io/ece5745-S01-front-end/)。来源/边界：[C5745-S23 / S01-2023](../references/cornell_ece5745.md)。
+- **带着问题读**：选增量实现、独立测试、再进综合的步骤；项目对象保持自己的 SPI 配置控制器。
+- **回到本课做**：配置结课项目：先冻结 spi_frontend/register_bank/config_apply 接口，以事务模型验证，再按自己的 runner 推进。
+- **留下证据**：三模块契约、baseline 测试计划与后续实现目录；不扩展第 01 课 Master。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 分模块实现 spi_frontend、register_bank、config_apply，在独立后续实验目录保存 RTL、testbench、约束和运行脚本。先写模块接口和接受条件，再写代码。保持原 Master 工程和验证契约。
@@ -102,6 +109,13 @@ MOSI 03 00 00：读 ACTIVE_CODE，MISO = 00 0A BC
 | 可复现性 | 源文件、版本、命令与结果可对应 |
 
 满分 16。建议达到 13 分且接口、验证、时序、配置一致性没有 0 分，再增加新功能。这个评分用于学习，不代替工程签核。
+
+### 24 参考与实验
+
+- **选读与定位**：K05/K06/K07 · S 评价方法：[Cornell ECE5745 S02：ASIC Flow Back-End](https://cornell-ece5745.github.io/ece5745-S02-back-end/)。来源/边界：[C5745-S23 / S02-2022](../references/cornell_ece5745.md)。
+- **带着问题读**：只借评估报告如何解释设计选择，回到自己证据包的边界。
+- **回到本课做**：配置结课项目：挑一条最危险的并发序列，从规格→RTL→checker→约束逐项评审，并列未做物理项。
+- **留下证据**：评审清单、失败/恢复轨迹和按验证层次分类的证据包。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
 
 ### 练习与验收
 

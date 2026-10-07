@@ -20,6 +20,25 @@ test('home, course search, reader and source navigation', async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
+test('lesson records lead directly to a relevant reading and the project experiment', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/plan/');
+  const record = page.locator('[data-lesson="03"]');
+  await record.locator('summary').click();
+  await record.getByRole('link', { name: '本课选读与实验' }).click();
+  await expect(page).toHaveURL(/#03-.*$/);
+  await expect(page.getByRole('heading', { name: '03 参考与实验', exact: true })).toBeInViewport();
+  const reading = page.locator('h3[id="03-参考与实验"] + ul');
+  await expect(reading).toContainText('Non-Blocking Assignments');
+  await expect(reading).toContainText('tx_shift');
+  await expect(reading.getByRole('link', { name: 'EECS151 ASIC Lab 1：SystemVerilog Primer', exact: true })).toHaveAttribute('href', 'https://eecs151.org/asic/lab1/docs/pg4-verilog/');
+  await expect(reading.getByRole('link', { name: '学习日志模板', exact: true })).toHaveAttribute('href', '/learn/learning_log/_template/');
+  await page.getByRole('navigation', { name: '本讲逐课选读与实验' }).getByRole('link', { name: /^06：/ }).click();
+  await expect(page.getByRole('heading', { name: '06 参考与实验', exact: true })).toBeInViewport();
+  await expect(page.locator('h3[id="06-参考与实验"] + ul')).toContainText('EXP-VERIFY-CONTRACT');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});
+
 test('learning state and notes persist; valid import merges and invalid import is rejected', async ({ page }) => {
   await page.goto('/plan/');
   const record = page.locator('[data-lesson="01"]');

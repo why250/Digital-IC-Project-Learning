@@ -42,6 +42,13 @@ out_valid 是 push 接口，消费端必须接受全部输出或由外部缓冲�
 
 当前 tutorial.lib 不代表真实工艺面积/功耗/频率。新项目综合可能暴露 MAC 时序、门数或高扇出问题，这些需要实际报告，不在课程里预写“通过”。
 
+### DF08 参考与实验
+
+- **选读与定位**：K04/K06/K09/K14 · P 存储方法；Own 抽取调度：[EECS151 ASIC Lab 3：SRAM and Hard Macros](https://eecs151.org/asic/lab3/docs/pg4-sram-and-hard-macros/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：只读 SRAM 端口/视图；宏读延迟怎么进入 FIR deadline，不能照搬 dot-product lab 当滤波实现。
+- **回到本课做**：EXP-DF-CHAIN / EXP-SRAM-BUFFER：比较历史样本用 FF 还是同步 RAM，先排 MAC 时间表与 valid/phase/warm。
+- **留下证据**：存储契约、资源调度、整数 oracle 与真实综合路径；宏/P&R 另验。将预测、实际观察和结论写入 [本方向学习表](11_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ## 验收
 
 bit-accurate、count、phase、warm 和 reset 均通过；延迟/吞吐和实际时序可解释；明确 ADC 输入 CDC 和输出传输接口边界。结课契约见 [项目规格](09_project.md)，答案见 [DF08 参考](10_answers.md)。

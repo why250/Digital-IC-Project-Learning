@@ -46,6 +46,13 @@ SPI 有移位功能，也有接口协议。Mode 0 表示 CPOL=0、CPHA=0：SCLK 
 
 消费方若同样用 `always_ff @(posedge clk)`，会在 done 置高后的下一个上升沿读到旧 done=1，同时读取已稳定的 rx_data；这是正常的寄存器间同步传输。
 
+### 01 参考与实验
+
+- **选读与定位**：K02/K03 · P 首选：[MIT 6.004 单元 6：Finite State Machines](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c6/)。来源/边界：[M6004-S17](../references/mit_6004.md)。
+- **带着问题读**：只选状态、输入与下一状态的关系；对照自己的 IDLE 接受条件，别把 start 看成无条件调用。
+- **回到本课做**：EXP-SPI-BASE：为 start 持续高、busy 中 start、正常请求分别预测接受次数，再核对本课接口表。
+- **留下证据**：请求/接受/完成三列台账与 FSM 图。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 画出 start、busy、cs_n、done 的关系。补充一个反例：start 一直高到下一次 IDLE，会发生什么？验收要求能解释“发出请求”和“请求被接受”的区别，不把 busy-start 丢弃说成排队。
@@ -70,6 +77,13 @@ SPI 有移位功能，也有接口协议。Mode 0 表示 CPOL=0、CPHA=0：SCLK 
 第八次采样形成 3C；8.0 μs 出现最后下降沿；8.5 μs 释放 CS，done 高 20 ns。有效传输的八个时钟周期是 8 μs，CS 有效时间是 8.5 μs。
 
 对应模拟电路的思考：数字波形图通常省略传播延迟和斜率，但真实接收器需要稳定窗口。RTL 中一条竖线不代表物理引脚在零时间内变化。
+
+### 02 参考与实验
+
+- **选读与定位**：K02/K07 · P 首选：[MIT 6.004 单元 5：Sequential Logic](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c5/)。来源/边界：[M6004-S17](../references/mit_6004.md)。
+- **带着问题读**：先看离散采样与状态更新；把时钟边沿和输出有效区间分开，大学门延迟示例不当作 SPI 器件指标。
+- **回到本课做**：EXP-SPI-BASE：不看结果先画 A5/3C；对照已有波形标八个采样、rx_data 更新和 CS 释放。
+- **留下证据**：带时间原点的波形标注和两处预测差异解释。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
 
 ### 练习与验收
 
@@ -98,6 +112,13 @@ mosi     <= tx_shift[6];
 
 仿真中的 X 表示未知，Z 表示高阻。普通 `==` 比较含未知位时可能返回 X；testbench 用 `!==` 将未知也判为不符合预期。它不能代替对硬件复位、初始化和真实三态结构的设计。组合逻辑一般用阻塞赋值表达临时计算，时序逻辑用非阻塞赋值描述状态更新。
 
+### 03 参考与实验
+
+- **选读与定位**：K02 · P 首选：[EECS151 ASIC Lab 1：SystemVerilog Primer](https://eecs151.org/asic/lab1/docs/pg4-verilog/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：只读 Sequential Logic / Non-Blocking Assignments；每条赋值右侧取的是哪一个旧 Q？
+- **回到本课做**：EXP-SPI-BASE：用 A5 的旧 tx_shift 算新 shift 与 mosi；再画第八次 RX 拼接的 D/Q。
+- **留下证据**：旧值/新值表和四个寄存器的连线图。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 画出 tx_shift、rx_shift、rx_data 和 mosi 的 D/Q 连线。推导第八次采样时，为什么 rx_data 要取 `{旧 rx_shift[6:0], miso}`，不能直接取旧 rx_shift。验收时不依赖逐句软件解释。
@@ -123,6 +144,13 @@ FINISH 提供完整的末尾 CS 保持时间；它不是多余等待。bit_count
 
 整数分频使 `f_sclk=50 MHz/(2D)`。要 2 MHz，需要 D=12.5，当前架构无法精确产生。D=12 为 2.0833 MHz，D=13 为 1.9231 MHz。交替半周期可以逼近平均频率，但会引入不同的边沿间隔，需要另写规格，不在本课加入。
 
+### 04 参考与实验
+
+- **选读与定位**：K02/K03 · P 首选：[EECS151 ASIC Lab 3：FSM Style Guide](https://eecs151.org/asic/lab3/docs/fsm-style-guide/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：只借状态划分与寄存器/组合逻辑分工；风格指南不要求重写已验证的单过程 Master。
+- **回到本课做**：EXP-SPI-BASE：为 D=1/3/25 预测终值事件与 FINISH 时长，解释 SCLK 是输出而不是内部 clock。
+- **留下证据**：状态转移表、divider 事件计数与频率/CS 时间表。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 计算 D=1、3、10、25 的频率、半周期和 CS 有效时间。D=10 可通过现有 runner 单独运行：
@@ -144,6 +172,13 @@ ssh -T -o BatchMode=yes IC_Server "bash /home/userone/AAAIC/test_tb/digital_ic_l
 复位也是时序输入：同步复位必须满足 setup/hold；异步复位的释放需要考虑 recovery/removal。不要因为“复位很慢”就把所有复位路径 false path。
 
 完成还有两个时刻：rx_data 在第八次采样更新，done 在 CS 释放时出现。二者之间的延迟用于完成协议尾部。上层用 done 作为有效标志，可以避免在中途读取旧交易结果。
+
+### 05 参考与实验
+
+- **选读与定位**：K02/K03/K05 · P 首选：[MIT 6.004 单元 5：Sequential Logic](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c5/)。来源/边界：[M6004-S17](../references/mit_6004.md)。
+- **带着问题读**：读寄存器初态与复位的时序含义；保留本课同步低有效 rst_n，不照示例改为异步复位。
+- **回到本课做**：EXP-SPI-BASE：预测复位与 start、最后采样、FINISH 同沿的优先级，再对照已有回归。
+- **留下证据**：复位/中止/完成矩阵；指出模拟电容状态不由数字 reset 自动清零。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
 
 ### 练习与验收
 
@@ -169,6 +204,13 @@ testbench 的独立从设备给出 MISO，同时检查 MOSI，不使用唯一的
 现有 testbench 在 clk 上升沿后延迟 1 ns 检查输出，以观察非阻塞更新后的值。这个延迟是 testbench 的调度手段，不能移进可综合 RTL 当作真实延迟单元。
 
 故障注入实验：保留当前改动后，一次只引入一个错误，例如把接受时的首位 MOSI 从 bit7 改为 bit6。运行测试，记录它在哪个检查点失败，再精确恢复这一行。不要以“仿真波形看起来差不多”代替自动检查。
+
+### 06 参考与实验
+
+- **选读与定位**：K05 · P 首选：[EECS151 ASIC Lab 2：Testbenches](https://eecs151.org/asic/lab2/docs/pg3-testbenches/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：只读 stimulus、观察与结果判定的分工；为什么独立 slave 比 MOSI 回接 MISO 更能发现错误？
+- **回到本课做**：EXP-VERIFY-CONTRACT：先写采样沿错误、done 两周期两个注入及预计 checker，再接本课既有 774 交易基线和 K05 覆盖补充。
+- **留下证据**：故障→检查器→失败位置矩阵与尚未覆盖项，实验副本未运行则不填 PASS。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
 
 ### 练习与验收
 

@@ -14,6 +14,13 @@
 
 复用基础功耗式 P≈αCV²f，分别估计接口、计数器、运算和时钟树。quiet window 的目标是敏感时刻的活动约束，低功耗的目标是能量/平均功率，二者相关但并不等价。
 
+### 45 参考与实验
+
+- **选读与定位**：K11 · Own 门控安全；S 电路视角：[Rabaey DIC 第 2 版章节索引](https://icbook.eecs.berkeley.edu/resources/powerpoint-slides)。来源/边界：[RABAEY-DIC2](../references/berkeley_ee141.md)。
+- **带着问题读**：按 Ch7/10 的时序/时钟视角选读；register enable 与 ICG 切断时钟电容不是同一个结构。
+- **回到本课做**：低功耗练习：预测 WAIT_SAMPLE 关钟的死锁，定义恢复源、测试旁路与允许停钟的域。
+- **留下证据**：活动/唤醒表和 ICG/enable 结构图；无库时不做物理门控 PASS。将预测、实际观察和结论写入 [本方向学习表](09_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 画出 idle/sampling/calibrating/fault 的活动表，列出哪些计数器可保持。故意在 WAIT_SAMPLE 关钟，解释死锁。验收要求每个门控域都有时钟恢复与测试旁路方案；没有 ICG 数据时只做设计分析，不用普通 AND 门代替物理门控。
@@ -29,6 +36,13 @@
 retained trim 不一定仍是有效校准值：温度/电压改变、模拟状态丢失后可能需要重新测量。保存 bit 与保存模拟性能是不同问题。
 
 UPF 表达 power intent，相关单元、power-aware 仿真和实现检查需要支持它的工具与库。普通 RTL 里把 power_good 拉低不会自动模拟真实掉电、X 传播或电平转换风险。
+
+### 46 参考与实验
+
+- **选读与定位**：K11/K13 · Own 电源契约；S 抽象边界：[MIT 6.004 单元 2：The Digital Abstraction](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c2/)。来源/边界：[M6004-S17](../references/mit_6004.md)。
+- **带着问题读**：只借逻辑电平的假设；电压域关闭后抽象会怎样失效，UPF/隔离/保持仍按本项目需求。
+- **回到本课做**：电源域练习：为 always-on 与可关断域列 power states，预测掉电时 safe 输出由谁维持。
+- **留下证据**：电源/隔离/保持/恢复表和缺失库/UPF 条件。将预测、实际观察和结论写入 [本方向学习表](09_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
 
 ### 练习与验收
 
@@ -46,6 +60,13 @@ scan 把可扫描触发器组织成移位链，以增强数字内部的可控性
 
 教学模式优先级可选 reset/fault→test_mode→calibration→normal；进入测试模式前停止功能事务，并明确定义退出后是否重新启动/校准。实际优先级必须满足安全和可测试性要求。
 
+### 47 参考与实验
+
+- **选读与定位**：K12/K13 · O DFT 主题；Own 模拟安全：[Stanford EE271 公开课程主题](https://web.stanford.edu/class/ee271/)。来源/边界：[S271-PUBLIC / 详细 syllabus 受限](../references/stanford_ee271.md)。
+- **带着问题读**：只核对公开 DFT 主题，具体 lecture/lab 未公开确认；详细步骤先按 K12 补充设计。
+- **回到本课做**：测试模式练习：预测 scan_shift 与 commit 并发时输出/clock 归属，再列 stuck-at 与 transition 的不同故障集。
+- **留下证据**：五模式拥有权表、故障模型/覆盖分母和 scan/ATPG 未执行项。将预测、实际观察和结论写入 [本方向学习表](09_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 写 scan_shift、scan_capture、analog_test、calibration、normal 的输出/时钟表。注入模式切换与 commit 并发，检查拥有权。当前没有已运行的 scan insertion/ATPG 流程，理论验收不标记为 DFT 签核通过。
@@ -61,6 +82,13 @@ scan 把可扫描触发器组织成移位链，以增强数字内部的可控性
 评审检查功能规格、数模契约、算术误差、异常恢复、CDC、约束来源、模型覆盖、实现场景与未完成项。真实模拟 settling、毛刺、供电/衬底耦合和测试覆盖仍需各自证据。
 
 完成本课程的主要学习门槛是：能独立实现并验证小型数模控制模块，解释电路与报告，明确何处需要模拟/工艺数据。学习门槛与流片签核是两个不同的验收层次。
+
+### 48 参考与实验
+
+- **选读与定位**：K06/K07/K10/K12 · P 实现评价：[Cornell ECE5745 S02：ASIC Flow Back-End](https://cornell-ece5745.github.io/ece5745-S02-back-end/)。来源/边界：[C5745-S23 / S02-2022](../references/cornell_ece5745.md)。
+- **带着问题读**：选后端评价方法；用实际阶段报告回答为何架构/布局产生当前结果，不只交一张 PASS。
+- **回到本课做**：EXP-ASIC-IMPLEMENT：汇合整数/协议回归、约束来源、实现阶段和模拟接口，以项目证据矩阵逐项评审。
+- **留下证据**：分层交付包、MMMC 场景与 UPF/DFT/AMS 等未执行边界。将预测、实际观察和结论写入 [本方向学习表](09_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
 
 ### 练习与验收
 

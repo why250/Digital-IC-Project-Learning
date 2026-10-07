@@ -21,6 +21,13 @@
 
 独立同步多根信号可能分别多延迟一个周期。SPI 的 MOSI 若在下降沿更新，到下一上升沿之前有较长稳定窗口，就可以设计过采样采样窗口；若源端在采样沿附近也变化，分别同步不会自动保持关系。
 
+### 11 参考与实验
+
+- **选读与定位**：K03/K08 · S 第二视角：[MIT 6.004 单元 5：Sequential Logic](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c5/)。来源/边界：[M6004-S17](../references/mit_6004.md)。
+- **带着问题读**：只补采样窗口概念；外部 SCLK 会停钟，本课两种 Slave 架构与 CDC 约束仍按自己的分析。
+- **回到本课做**：EXP-CDC-PULSE：给同步过采样和 SCLK 域两张架构图，扫描外部边沿相位并写最小脉宽需求。
+- **留下证据**：clock-domain 图和相位/捕获台账，不用 RTL 宣称 MTBF。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 画出两种架构并标注所有时钟域。假设 1 MHz SCLK，把外部边沿相对 clk 的相位从 0 扫到 20 ns，预测最早/最晚检测时刻。验收要求能够指出过采样方案仍有异步输入问题。
@@ -36,6 +43,13 @@
 窄脉冲可能完全落在目的时钟两个边沿之间，两个同步器也捕获不到。可拉宽、使用 toggle，或用 request/ack 协议。toggle 的两次变化若快到在目的域看到前抵消，也会丢事件；必须限制事件速率或等待确认。
 
 教学问题：源域脉冲 10 ns，目的时钟周期 20 ns。某些相位会采到，某些相位会漏；不能用一个仿真相位的通过结果证明可靠。
+
+### 12 参考与实验
+
+- **选读与定位**：K08 · S 基础抽象：[MIT 6.004 单元 5：Sequential Logic](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c5/)。来源/边界：[M6004-S17](../references/mit_6004.md)。
+- **带着问题读**：用顺序逻辑解释每一级 Q 的更新；2FF 的亚稳态参数与窄脉冲协议不能由基础 lecture 自动得出。
+- **回到本课做**：EXP-CDC-PULSE：预测 10 ns 脉冲在 20 ns 目的周期下的漏采区，比较 level、toggle 与握手的适用事件率。
+- **留下证据**：相位反例图与 level/event/stream 选择表。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
 
 ### 练习与验收
 
@@ -61,6 +75,13 @@ payload 不逐位用同步器重组，而是依靠保持协议及控制延迟，
 
 ack 的含义必须固定为“目的域已捕获到本地缓冲”；它不等于“模拟输出已经生效”。应用完成应另有状态。
 
+### 13 参考与实验
+
+- **选读与定位**：K04/K08 · S 接口方法：[EECS151 FPGA Lab 4：Ready-Valid Interfaces](https://eecs151.org/fpga/lab4/docs/pg3-readyvalid/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：只借请求保持与接受事件的思想；同域 ready-valid 不直接解决本课跨域 payload 一致性。
+- **回到本课做**：EXP-CDC-PULSE：目标停钟时保持 payload/req，预测第二请求被拒绝还是等待，再按 mailbox 契约核对 ack。
+- **留下证据**：payload/req/ack 台账与保持窗口，独立列 CDC 假设。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 画出 payload、req、同步 req、捕获、ack 和源域 busy。目的时钟变慢或暂停时，源端必须保持 payload，后续请求按规格拒绝或等待。验收要求能证明没有覆盖尚未接收的数据，以及为何两次快速 toggle 不被允许。
@@ -83,6 +104,13 @@ busy 时 commit 可以拒绝并置 sticky overflow，也可以由队列保存。
 
 多个数字 Q 在同一时钟更新只保证逻辑字一致性；各输出的 t_cq 和布线不同，模拟译码网络仍可能出现瞬态。需要从电路要求决定是否加入模拟侧锁存、blanking、break-before-make 或编码策略。数字原子更新不能直接保证模拟无毛刺。
 
+### 14 参考与实验
+
+- **选读与定位**：K04/K13 · S 状态方法：[MIT 6.004 单元 6：Finite State Machines](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c6/)。来源/边界：[M6004-S17](../references/mit_6004.md)。
+- **带着问题读**：从“状态保存什么”理解 shadow/pending/active；模拟原子更新与 settling 仍由自己的接口定义。
+- **回到本课做**：配置项目练习：commit 0x123 后继续写 0xABC，预测 safe_update 后 active，测试快照不被覆盖。
+- **留下证据**：三份配置的逐拍表与应用/模拟稳定两个事件。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 让 shadow_code 从 0x123 改到 0xABC，中途 commit，再继续写 shadow。记录 pending 与 active 的值。验收要求能说明原子范围是哪个字段集合，以及模拟侧如何定义允许的瞬态和稳定时间。
@@ -98,6 +126,13 @@ req/ack 的初始 epoch 必须一致。只复位一侧可能制造假事务、�
 读回也需要一致性。直接将多位 active 状态跨域给 SPI 移位器会读到混合字。可以通过反向 mailbox 或稳定快照缓存。在 SCLK 域方案中，从读命令结束到下个 MISO 首位可能只有半周期；若不足以完成跨域读请求，应规定 dummy 字节、分成 request/read 两个事务，或读已有快照，并标注版本/新鲜度。
 
 RTL 仿真不能真实模拟触发器亚稳态。相位扫描、异频、暂停和协议断言检查逻辑边界；CDC 结构分析、STA 约束和物理实现承担不同的证据责任。
+
+### 15 参考与实验
+
+- **选读与定位**：K05/K08 · P 验证方法：[EECS151 ASIC Lab 4：Coverage](https://eecs151.org/asic/lab4/docs/pg1-coverage/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：选功能覆盖与交叉覆盖的思路；覆盖跨域复位、停钟与请求阶段，而不只数源码行。
+- **回到本课做**：EXP-VERIFY-CONTRACT：在原复位矩阵中加入 source/destination 谁先恢复、旧 epoch 与 safe_update 缺失。
+- **留下证据**：阶段×复位/停钟覆盖矩阵及每个缺口的处置。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
 
 ### 练习与验收
 

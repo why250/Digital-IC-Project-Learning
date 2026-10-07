@@ -17,6 +17,17 @@
 
 Lecture 编号绑定 F26，换学期时核对标题后再用。Labs 是借用方法的参考，不宣称公开课以 SPI/ADC 为实验对象。
 
+原课内已经给出逐课阅读处方；下面保留可直接定位的官方小节，避免只到 Lab 首页：
+
+| 官方小节（F26 站，2026-10-07 核对） | 原课内接入示例 |
+|---|---|
+| [Lab 1 SystemVerilog Primer](https://eecs151.org/asic/lab1/docs/pg4-verilog/)：Sequential Logic / Non-Blocking Assignments | [03：旧 Q 与新 D](../course/01_sync_spi.md#03-参考与实验) |
+| [Lab 2 Testbenches](https://eecs151.org/asic/lab2/docs/pg3-testbenches/) | [06：独立 SPI slave 与错误注入](../course/01_sync_spi.md#06-参考与实验) |
+| [Lab 2 Synthesis](https://eecs151.org/asic/lab2/docs/pg6-synthesis-intro/) | [08：Genus 网表解释](../course/02_synth_sta.md#08-参考与实验)、[AD15：定点校正路径](../adc_digital/04_calibration.md#ad15-参考与实验) |
+| [Lab 3 FSM Style Guide](https://eecs151.org/asic/lab3/docs/fsm-style-guide/) | [26：模拟 ready 与等待边界](../mixed_signal/01_power_reset.md#26-参考与实验) |
+| [Lab 3 Place and Route](https://eecs151.org/asic/lab3/docs/pg3-place-and-route/)、[Clock Tree Synthesis](https://eecs151.org/asic/lab3/docs/pg4-clock-tree-synthesis/) | [19：物理输入清单](../course/05_physical.md#19-参考与实验)、[20：skew 与 setup/hold](../course/05_physical.md#20-参考与实验) |
+| [FPGA Lab 4 Ready-Valid Interfaces](https://eecs151.org/fpga/lab4/docs/pg3-readyvalid/)、[FIFO](https://eecs151.org/fpga/lab4/docs/pg5-fifo/) | [17：同步 FIFO](../course/04_integration.md#17-参考与实验)、[AD08：容量与流控](../adc_digital/02_timing_data.md#ad08-参考与实验)；不替代异步 CDC 证据 |
+
 ## 为什么值得学
 
 它把 RTL 语义、验证与 ASIC 实现连接起来，适合补上模拟工程师熟悉晶体管和时序，却尚未形成数字工具证据链的部分。读课时始终追问：哪一段 RTL 是触发器、组合门、时钟负载或物理连线？

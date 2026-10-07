@@ -22,6 +22,13 @@ floorplan 定义核心区、端口、宏单元、电源结构和可用空间。�
 
 计算题：假设单元面积合计 10000 μm²，目标初始利用率 60%，则简单核心面积估算为 16666.7 μm²，正方形边长约 129.1 μm。它未包括电源、宏单元、阻挡、CTS/修复新增单元和规则开销。当前教学库的 440.500 未确认可换算为真实 μm²，不代入真实芯片尺寸结论。
 
+### 19 参考与实验
+
+- **选读与定位**：K10 · P 首选：[EECS151 ASIC Lab 3：Place and Route](https://eecs151.org/asic/lab3/docs/pg3-place-and-route/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：只读 floorplan、placement 与实现输入；用数据清单判断自己的小模块能否开始。
+- **回到本课做**：EXP-ASIC-IMPLEMENT：列匹配 Liberty/LEF/技术文件、macro/IO/供电和授权来源，再选小控制模块。
+- **留下证据**：输入闭合清单与缺失项；缺数据时提交设计分析，物理实验未执行。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 先列出实际可用输入与来源，再决定能否运行 Innovus。若具备数据，在独立 batch job 中导入、floorplan、放置，并保存工具版本、场景及结构检查。若不具备，提交计算与缺失数据表，物理实验保持“未执行”。
@@ -37,6 +44,13 @@ skew 是不同接收点的相对到达差；jitter 是边沿随时间的变化�
 正 skew 在简化模型中帮助 setup、损害 hold。例子：某路径原 setup slack=0.10 ns、hold slack=0.06 ns；只有相对 skew 增加 0.08 ns、其他保持不变，新的 setup=0.18 ns、hold=−0.02 ns。
 
 门控时钟用于减少无效切换，但直接 `clk & enable` 可能在时钟高电平期间改变输出，产生窄脉冲。工艺门控单元和正确的控制时序用于避免该风险。第 01 课使用寄存器使能学习保持/更新，不直接引入自制门控时钟。
+
+### 20 参考与实验
+
+- **选读与定位**：K07/K10 · P 首选：[EECS151 ASIC Lab 3：Clock Tree Synthesis](https://eecs151.org/asic/lab3/docs/pg4-clock-tree-synthesis/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：读 CTS 的目标与插入时钟树之后的分析变化；skew、jitter、uncertainty 分开。
+- **回到本课做**：EXP-SDC-HOLD：手算 capture 提前/晚到两种情形；有数据后再读 CK 路径、setup/hold 与 slew。
+- **留下证据**：skew 正负影响表与 ideal/propagated-clock 场景卡。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
 
 ### 练习与验收
 
@@ -54,6 +68,13 @@ hold 修复常在必要的数据路径加延迟或调整相对时钟到达，具
 
 计算题：t_cq,max=0.10 ns、cell delay=0.60 ns、原 wire delay=0.10 ns，setup=0.10 ns、uncertainty=0.10 ns、T=1.0 ns、skew=0，原 slack=0。布线后 wire delay=0.35 ns，新 slack=−0.25 ns。说明逻辑网表不变仍会出现违例。
 
+### 21 参考与实验
+
+- **选读与定位**：K07/K10 · P 首选：[Cornell ECE5745 S02：ASIC Flow Back-End](https://cornell-ece5745.github.io/ece5745-S02-back-end/)。来源/边界：[C5745-S23 / S02-2022](../references/cornell_ece5745.md)。
+- **带着问题读**：选布线、寄生和 timing/area/energy 评价方法；被 2023 课程引用的 S02 本身仍是 2022 版本。
+- **回到本课做**：EXP-ASIC-IMPLEMENT：固定模式/角，预测 wire delay 从 0.10 到 0.35 ns 的影响，制定 setup/hold 复查顺序。
+- **留下证据**：分阶段 cell/net delay 表、修复代价和物理检查边界。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 给一条假想负 slack 路径写修复优先级，指出每个选项的代价。具备数据时比较放置前/后、CTS 后、布线后的同类报告，确认分析角与时钟模型一致，再解释差异。修复后需重新检查功能、max/min timing 和必要的结构/物理检查。
@@ -69,6 +90,13 @@ CMOS 动态功耗近似 `P=α×C×V²×f`，本课 α 定义为每时钟周期�
 综合功耗需要代表性活动、库数据和分析场景。没有活动文件时的默认 toggle 假设可能偏离 SPI 长时间空闲的实际应用。内部组合毛刺、输入变化和时钟本身都可能贡献功耗。
 
 对模拟电路还要评估：数字更新的供电电流瞬态、地弹、耦合、配置输出毛刺、启动顺序和敏感采样窗口。safe_update 只约束更新时机；噪声幅度、模拟稳定时间和供电完整性需要相应的电路/版图证据。
+
+### 22 参考与实验
+
+- **选读与定位**：K01/K11 · S 电路视角：[Rabaey DIC 第 2 版章节索引](https://icbook.eecs.berkeley.edu/resources/powerpoint-slides)。来源/边界：[RABAEY-DIC2](../references/berkeley_ee141.md)。
+- **带着问题读**：按 Ch5/6/10 的电容/切换/时钟问题选读；数字活动降低不自动证明模拟耦合减小。
+- **回到本课做**：功耗场景练习：用相同电压/频率/负载比较 idle、SPI、commit，分别注明活动来源与 quiet 假设。
+- **留下证据**：αCV²f 手算、活动场景卡与模拟噪声待验证清单。将预测、实际观察和结论写入 [本方向学习表](08_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
 
 ### 练习与验收
 

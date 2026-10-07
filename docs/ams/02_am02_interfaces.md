@@ -31,6 +31,13 @@ X/Z 必须预先制定行为。本课的简化 L2E 在数字 X/Z 时输出 0 V�
 
 如果用真实 connect rule，先查该版本对 X/Z、迟滞、阈值和初态的定义，再修改用例期望，不假设与上述自写教学桥相同。[设置指南](07_setup.md)给出检查位置。
 
+### AM02 参考与实验
+
+- **选读与定位**：K01/K19 · Own 接口桥；S 数字抽象：[MIT 6.004 单元 2：The Digital Abstraction](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c2/)。来源/边界：[M6004-S17](../references/mit_6004.md)。
+- **带着问题读**：只问数字 0/1 的适用电平窗口；L2E/E2L 的 rout、阈值、供电和求解条件仍由自己的桥模型负责。
+- **回到本课做**：AMS bridge 练习：预测理想阶跃与有限 rout 下的 crossing，再改变阈值/边沿/供电核对。
+- **留下证据**：logic/electrical 域图、电压/时间预测和桥参数卡。将预测、实际观察和结论写入 [本方向学习表](10_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ## 验收与进阶
 
 理想阶跃基准阈值时间误差 ≤0.2 ns，maxstep 减半后时间变化 ≤0.1 ns。实际 crossing 插值与事件精度要有记录。有限边沿对照用同一模型独立瞬态/解析卷积，不把理想时间作为硬判据。

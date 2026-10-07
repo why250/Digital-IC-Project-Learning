@@ -14,6 +14,13 @@
 
 采样调度要避免竞态：刺激在合适的非采样时刻变化；检查要区分边沿前接受条件和边沿后输出。将 DUT 内部状态原样复制到 reference model 会共享错误，应从接口事件维护参考状态。
 
+### 41 参考与实验
+
+- **选读与定位**：K05 · P 首选：[EECS151 ASIC Lab 4：Formal Verification](https://eecs151.org/asic/lab4/docs/pg3-formal/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：只读 assert/assume/cover、可达性与复位；证明条件不能排除本来允许的故障。
+- **回到本课做**：EXP-VERIFY-CONTRACT：十条不变量各配一个违反它的注入，先程序 monitor，再按 K05 补充评审 SVA。
+- **留下证据**：property/assumption/cover 表、故障检测证据与 vacuity 检查；formal 未运行时留空。将预测、实际观察和结论写入 [本方向学习表](09_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 为结课项目写至少十条性质，并给每条一个能违反它的故障。注入“settling 提前结束”“旧 id 被接受”“busy-start 覆盖 target”等错误，确认监视器实际失败。验收要求性质有明确观察点和复位例外。
@@ -29,6 +36,13 @@ plant 可用有符号整数或 testbench 的 real 运算表达，再明确量化
 模拟模型必须能拒绝不合法请求：未 ready、settling 中、已有未确认响应时不接受新请求，并让测试失败或返回明确 invalid。若模型始终立刻返回理想值，会把控制器过早采样的问题隐藏起来。
 
 随机测试有固定 seed，失败记录 seed、参数和输入序列。模型的 ready 与 DUT 等待计数不能用同一个内部变量驱动；采用独立时序参数才有机会发现 off-by-one。
+
+### 42 参考与实验
+
+- **选读与定位**：K05/K13 · Own 模拟模型；P TB 方法：[EECS151 ASIC Lab 2：Testbenches](https://eecs151.org/asic/lab2/docs/pg3-testbenches/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：只借 DUT、stimulus、oracle 的分离；ready/settling/ADC 模型参数不共用 DUT 的计数。
+- **回到本课做**：测量模型练习：独立构造四组件，故意把等待缩短一拍，预测模型如何拒绝早采样。
+- **留下证据**：模型接口图、非法请求台账和未建模的模拟效应。将预测、实际观察和结论写入 [本方向学习表](09_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
 
 ### 练习与验收
 
@@ -46,6 +60,13 @@ plant 可用有符号整数或 testbench 的 real 运算表达，再明确量化
 
 电路前提被破坏时要验证“正确失败”，例如非单调 plant、增益为零、参考不 ready、ADC clipping。不能要求任意异常场景仍校准成功。
 
+### 43 参考与实验
+
+- **选读与定位**：K05 · P 首选：[EECS151 ASIC Lab 4：Coverage](https://eecs151.org/asic/lab4/docs/pg1-coverage/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：选场景/交叉覆盖，让参数边界与故障分类决定测试，而非随机次数决定完成。
+- **回到本课做**：EXP-VERIFY-CONTRACT：N−1/N/N+1 定向边界后加入固定 seed 随机序列，重放一次失败。
+- **留下证据**：合法域/故障域分开的矩阵、seed/参数与覆盖缺口处置。将预测、实际观察和结论写入 [本方向学习表](09_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
+
 ### 练习与验收
 
 写矩阵并区分预期 success、error、abort、FAULT 和不在契约内的输入。至少重放一次随机失败。验收要求失败原因可定位到协议、运算、模型前提或实现，而不是统一归为“收敛不好”。
@@ -61,6 +82,13 @@ plant 可用有符号整数或 testbench 的 real 运算表达，再明确量化
 功能覆盖记录状态/分支/异常是否被触发，代码覆盖记录实现是否被执行，二者不互相替代。当前已启用的工具没有完整覆盖系统时，可以用显式计数和事件矩阵，记录未覆盖项。
 
 交付源版本、参数、seed、命令、退出码、完成标记和证据位置。RTL 仿真与综合分别验证不同方面；新项目也需要自己的 runner、映射检查和时序意图审查，不能借第一课的 PASS 标记算通过。
+
+### 44 参考与实验
+
+- **选读与定位**：K05 · P 首选：[EECS151 ASIC Lab 4：Coverage](https://eecs151.org/asic/lab4/docs/pg1-coverage/)。来源/边界：[B151-F26](../references/berkeley_eecs151.md)。
+- **带着问题读**：区别代码覆盖、功能覆盖与 assertion 命中；100% 行覆盖为何仍可能漏掉旧 id？
+- **回到本课做**：EXP-VERIFY-CONTRACT：将模块回归与顶层 id/version/应用计数联结，注入共享错误验证 oracle 独立性。
+- **留下证据**：覆盖闭环表、计数守恒、失败/恢复和证据 manifest。将预测、实际观察和结论写入 [本方向学习表](09_workbook.md)；公开资料引起的理解变化用 [学习日志模板](../learning_log/_template.md) 记录。
 
 ### 练习与验收
 

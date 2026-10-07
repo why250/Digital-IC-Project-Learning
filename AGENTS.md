@@ -9,6 +9,8 @@ Start with lesson 01: a single-system-clock SPI master. Keep later topics separa
 - Read docs/references/course_mapping.md before adding external courses, books or videos.
 - Attach resources to existing K knowledge nodes. Add a node only for a new engineering capability, not a new source.
 - Reuse existing explanations; link a specific official/versioned reading to a project experiment and an expected artefact.
+- Integrate reading prescriptions into the relevant original lesson: a specific section, a question, the project's exercise and expected evidence. A central mapping link alone is insufficient.
+- Keep K nodes/stage relations in the mapping, source versions in reference pages and lesson prescriptions in original Markdown. Derive website links from those headings; do not duplicate recommendations in frontend data.
 - Save links and original interpretations, not copyrighted slides, books, solutions or school tool environments.
 - Keep personal acceptance in workbooks, learning narratives in docs/learning_log, and engineering evidence in docs/progress.md.
 - Record Prediction -> Experiment -> Evidence -> Conclusion. Never invent personal learning or unexecuted tool results.
