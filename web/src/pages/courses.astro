@@ -1,0 +1,11 @@
+---
+import Base from '../layouts/Base.astro';
+import { courses, documents } from '../lib/catalog';
+---
+<Base title="课程目录与搜索">
+  <div class="wrap"><header class="page-heading"><p class="eyebrow">Library / Learn & verify</p><h1>找到眼前需要的一课。</h1><p>讲义、参考答案、项目契约与工程证据统一收在这里。搜索支持标题与正文；先完成预测，再对照答案。</p></header>
+    <div class="search-controls"><label>搜索材料<input id="course-search" type="search" placeholder="例如：非阻塞赋值、CIC、skew、采样窗口" /></label><label>范围<select id="course-filter"><option value="">全部课程与参考</option>{courses.map(course => <option value={course.id}>{course.title}</option>)}<option value="reference">工程与路线参考</option></select></label><p class="small muted" id="search-count" role="status">{documents.length} 份材料</p></div>
+    <p id="search-empty" class="callout" hidden>没有匹配材料，试着减少关键词或选择“全部课程与参考”。</p>
+    <div class="catalog-grid">{documents.map(doc => <article class="document-card" data-search={doc.search} data-course={doc.courseId ?? 'reference'}><span class="tag">{courses.find(course => course.id === doc.courseId)?.title ?? '项目参考'} · {doc.kind}</span><h3><a href={doc.url}>{doc.title} →</a></h3><p>{doc.file}</p></article>)}</div>
+  </div>
+</Base>

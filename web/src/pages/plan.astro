@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import LearningRecord from '../components/LearningRecord.astro';
+import { courses, lessons } from '../lib/catalog';
+---
+<Base title="学习路线与个人记录">
+  <div class="wrap"><header class="page-heading"><p class="eyebrow">My learning / Circuit → prediction → evidence</p><h1>按理解推进，留下自己的证据。</h1><p>从 SPI 的寄存器和采样沿开始。完成公共基础后，结合 CT ΔΣ 背景优先深入抽取滤波；AMS 随项目加入。<a href="/learn/roadmap/">查看完整前置与阶段门槛 →</a></p></header>
+    <div class="planner-controls"><div><span class="eyebrow">个人验收</span><p style="margin:6px 0 0;font-size:26px" class="mono" id="total-progress">0 / {lessons.length}</p></div><label>每周投入<input id="weekly-hours" type="range" min="2" max="16" step="1" value="8" /><output id="hours-value">8 h / 周</output></label><div class="actions"><button class="button" id="export-progress" type="button">导出学习备份 ↓</button><button class="button" id="import-progress" type="button">导入并合并备份 ↑</button><input id="import-file" type="file" accept=".json,application/json" hidden aria-label="选择学习备份" /></div></div>
+    <p class="small muted" style="margin-top:12px">时间为起始估算，共用知识复用，预算不机械相加。记录仅保存在当前浏览器；导入会合并记录，同一课以备份为准。</p>
+    {courses.map((course, i) => <details class="planner-group" open={i === 0}><summary><div><h2>{course.title} <span class="mono">{course.label}</span></h2><span>{course.hours} · <span data-budget={course.hours.match(/\d+/g)!.join(',')}></span></span></div><span data-course-progress={course.id}>0 / {course.last - course.first + 1} 已验收</span></summary><div class="intro"><p>{course.summary}</p><p><strong>进入前：</strong>{course.prerequisite}<br /><strong>工具与材料：</strong>{course.evidence}</p><a href={`/learn/${course.id}/00_course/`}>课程总纲、项目与验收 →</a></div><LearningRecord items={lessons.filter(lesson => lesson.courseId === course.id)} /></details>)}
+    <div class="callout"><h3>怎样才算学完一课？</h3><p class="small muted">能把 RTL 对应到 Q→组合逻辑→D，预测波形或整数结果，用独立检查发现错误，并解释约束和模拟接口假设。工具 PASS 是已有工程证据；“已验收”由你按课程标准记录。</p></div>
+  </div>
+</Base>

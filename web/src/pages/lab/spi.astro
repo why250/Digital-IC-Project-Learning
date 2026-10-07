@@ -1,0 +1,59 @@
+---
+import Base from '../../layouts/Base.astro';
+import { spiFrame, frameTraces } from '../../lib/spi';
+const frame = spiFrame(0xA5, 0x3C, 25);
+const paths = frameTraces(0xA5, 0x3C, 25);
+---
+<Base title="SPI Mode 0：逐沿理解一帧">
+  <div class="wrap lab-wrap"><header class="page-heading"><p class="eyebrow">Interactive / Lesson 01</p><h1>先预测，再看八个采样沿。</h1><p>50 MHz 系统时钟，SPI Mode 0、8 位、MSB first。内部寄存器都用 <code>clk</code>，分频事件控制 SCLK 输出与移位。<a href="/learn/course/01_sync_spi/">接回第一课 →</a></p></header>
+    <div class="lab-controls"><label>发送 TX（十六进制）<input id="tx-byte" type="text" value="A5" maxlength="2" pattern="[0-9a-fA-F]{1,2}" aria-describedby="data-hint" /></label><label>独立接收 RX（十六进制）<input id="rx-byte" type="text" value="3C" maxlength="2" pattern="[0-9a-fA-F]{1,2}" aria-describedby="data-hint" /></label><label>半周期分频<select id="divider"><option value="1">1 · 25 MHz SCLK</option><option value="3">3 · 8.333 MHz SCLK</option><option value="25" selected>25 · 1 MHz SCLK</option></select></label><button type="button" class="button" id="reset-spi">恢复 A5 / 3C</button><p id="data-hint" class="small muted">0–FF；MISO 使用独立理想从机数据。输入有效后更新，不构成回环验证。</p><p id="input-error" class="small" role="alert" hidden>请使用 1–2 位十六进制数（0–FF）。</p></div>
+    <div class="lab-metrics"><div><span>SCLK</span><strong id="sclk-frequency">1 MHz</strong></div><div><span>半周期</span><strong id="half-period">500 ns</strong></div><div><span>RX 更新</span><strong id="rx-update">7.5 μs</strong></div><div><span>CS 释放 / done</span><strong id="cs-release">8.5 μs</strong></div></div>
+    <section class="wave-panel" aria-label="SPI 理想协议波形"><div class="wave-head"><h2>八次上升沿采样，下降沿换下一位</h2><span class="small muted">横轴：相对请求接受边沿的时间</span></div><div class="wave-scroll"><svg id="spi-wave" viewBox="0 0 860 315" role="img" aria-label="CS、SCLK、MOSI、独立 MISO 与单系统周期 done 的理想时序"><g class="wave-grid">{Array.from({length: 18}, (_, i) => <path d={`M${72 + i * 40} 15v260`} />)}</g><rect id="sample-band" x="106" y="20" width="12" height="245" class="sample-band" />{Object.entries(paths).map(([name, d]) => <path id={`trace-${name}`} class={`trace trace-${name}`} d={d} />)}<g class="signal-labels">{['CS_n','SCLK','MOSI','MISO','done'].map((name, i) => <text x="4" y={54 + i * 50}>{name}</text>)}</g><g class="sample-labels">{frame.edges.map(edge => <text id={`edge-label-${edge.bit}`} x={72 + (2 * edge.bit + 1) * 40} y="295" text-anchor="middle">{edge.atNs / 1000}μs</text>)}</g><text x="72" y="295" class="signal-labels">0</text><text id="release-label" x="752" y="295" text-anchor="middle" class="sample-labels">8.5μs</text></svg></div><p class="small muted">高亮线是当前选中的采样沿。done 仅持续 20 ns；波形按 SCLK 半周期绘制，分频 25 时脉冲显得很窄。</p></section>
+    <section class="edge-panel"><div class="section-head"><h2>选择一个采样沿</h2><p>第 1 位已在首个上升沿前有效</p></div><div class="edge-buttons" role="group" aria-label="选择采样沿">{frame.edges.map(edge => <button type="button" data-edge={edge.bit} aria-pressed={edge.bit === 0 ? 'true' : 'false'}><span>#{edge.bit + 1}</span><b>bit {7 - edge.bit}</b></button>)}</div><div class="register-grid"><article><p class="eyebrow">MOSI / Shift out</p><h3 id="tx-bit">采样 TX bit 7 = 1</h3><p id="tx-register" class="mono">tx_shift = 10100101</p><p class="small muted">tx_data 在 start 被接受时锁存。下降沿事件移位，下一采样沿前保持稳定。</p></article><article><p class="eyebrow">MISO / Shift in</p><h3 id="rx-bit">采样 RX bit 7 = 0</h3><p id="rx-register" class="mono">rx_shift = 00000000</p><p id="sample-explanation" class="small muted">第 1 次采样后，rx_data 保持旧值；第 8 次采样才更新接收结果。</p></article><article><p class="eyebrow">Clk / Enables</p><h3 id="sample-time">500 ns · 第 25 个 clk 周期</h3><p class="small muted">这条 SCLK 上升沿来自系统时钟上的分频事件。它是输出协议沿，内部触发器继续由 clk 更新。</p><p class="small"><a href="/learn/01_spi_master/">完整接口与复位契约 →</a></p></article></div></section>
+    <div class="callout"><h3>把演示变成自己的推演</h3><p class="small muted">先不点第八沿：预测 RX 何时更新、done 何时有效、CS 为什么还需保持。改为分频 1，检查每个事件仍对应整拍 clk。再读 RTL 和真实回归，核对忙时请求、同步复位和输入锁存。</p><p class="small muted">本页是由接口契约生成的理想教学波形；真实 RTL 的仿真、MISO 外部时序假设与教学 SDC 边界见 <a href="/learn/progress/">验证记录</a>。</p></div>
+  </div>
+</Base>
+<script>
+  import { spiFrame, frameTraces } from '../../lib/spi';
+  const txInput = document.querySelector<HTMLInputElement>('#tx-byte')!;
+  const rxInput = document.querySelector<HTMLInputElement>('#rx-byte')!;
+  const dividerInput = document.querySelector<HTMLSelectElement>('#divider')!;
+  let selected = 0;
+  let current = spiFrame(0xA5, 0x3C, 25);
+  const bits = (byte: number) => byte.toString(2).padStart(8, '0');
+  const time = (ns: number) => ns >= 1000 ? `${Number((ns / 1000).toFixed(3))} μs` : `${ns} ns`;
+  const setText = (id: string, value: string) => { document.getElementById(id)!.textContent = value; };
+  function updateEdge() {
+    const edge = current.edges[selected]!;
+    setText('tx-bit', `采样 TX bit ${7 - selected} = ${edge.tx}`);
+    setText('rx-bit', `采样 RX bit ${7 - selected} = ${edge.rx}`);
+    setText('tx-register', `tx_shift = ${bits((current.tx << selected) & 255)}`);
+    setText('rx-register', `rx_shift = ${bits(edge.received)}`);
+    setText('sample-time', `${time(edge.atNs)} · 第 ${edge.atNs / 20} 个 clk 周期`);
+    setText('sample-explanation', selected === 7 ? `第 8 次采样后，rx_data 更新为 0x${current.rx.toString(16).toUpperCase().padStart(2, '0')}；在 ${time(current.releaseNs)} 的 done 时消费。` : `第 ${selected + 1} 次采样后，rx_data 保持旧值；第 8 次采样才更新接收结果。`);
+    document.querySelector('#sample-band')!.setAttribute('x', String(66 + (2 * selected + 1) * 40));
+    document.querySelectorAll<HTMLButtonElement>('[data-edge]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.edge) === selected)));
+  }
+  function update() {
+    const valid = [txInput.value, rxInput.value].every(value => /^[0-9a-fA-F]{1,2}$/.test(value));
+    document.querySelector<HTMLElement>('#input-error')!.hidden = valid;
+    txInput.setAttribute('aria-invalid', String(!/^[0-9a-fA-F]{1,2}$/.test(txInput.value)));
+    rxInput.setAttribute('aria-invalid', String(!/^[0-9a-fA-F]{1,2}$/.test(rxInput.value)));
+    if (!valid) return;
+    const divider = Number(dividerInput.value);
+    current = spiFrame(parseInt(txInput.value, 16), parseInt(rxInput.value, 16), divider);
+    setText('sclk-frequency', `${Number(current.frequencyMHz.toFixed(3))} MHz`);
+    setText('half-period', time(current.halfNs)); setText('rx-update', time(current.rxUpdateNs)); setText('cs-release', time(current.releaseNs));
+    for (const [name, d] of Object.entries(frameTraces(current.tx, current.rx, divider))) document.querySelector(`#trace-${name}`)!.setAttribute('d', d);
+    current.edges.forEach(edge => setText(`edge-label-${edge.bit}`, time(edge.atNs).replace(' ', '')));
+    setText('release-label', time(current.releaseNs).replace(' ', ''));
+    updateEdge();
+  }
+  txInput.addEventListener('input', update); rxInput.addEventListener('input', update); dividerInput.addEventListener('change', update);
+  document.querySelectorAll<HTMLButtonElement>('[data-edge]').forEach(button => button.addEventListener('click', () => { selected = Number(button.dataset.edge); updateEdge(); }));
+  document.querySelector('#reset-spi')!.addEventListener('click', () => { txInput.value = 'A5'; rxInput.value = '3C'; dividerInput.value = '25'; selected = 0; update(); });
+</script>
+<style>
+.lab-wrap{max-width:1280px}.lab-controls{display:flex;gap:16px;align-items:end;flex-wrap:wrap;padding:22px;background:var(--paper);border:1px solid var(--rule);border-radius:5px}.lab-controls label{display:grid;gap:6px;font-size:12px}.lab-controls input{width:130px;font-family:var(--mono)}.lab-controls select{min-height:42px}.lab-controls p{flex-basis:100%;margin:0}.lab-metrics{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--rule);border-radius:5px;margin:20px 0;background:var(--paper)}.lab-metrics>div{padding:16px 22px;border-right:1px solid var(--rule)}.lab-metrics>div:last-child{border:0}.lab-metrics span{display:block;font-size:11px;color:var(--muted)}.lab-metrics strong{font:20px var(--mono);display:block;margin-top:7px}.wave-panel{background:var(--paper);border:1px solid var(--rule);border-radius:5px;padding:22px}.wave-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.wave-head h2{font-size:17px;margin:0}.wave-scroll{overflow:auto;margin:20px 0 4px}.wave-scroll svg{width:100%;min-width:720px;display:block}.wave-grid{stroke:var(--rule);stroke-width:.6;stroke-dasharray:2 4}.trace{fill:none;stroke:var(--ink);stroke-width:1.6}.trace-mosi{stroke:var(--brand);stroke-width:2}.trace-miso{stroke:var(--blue);stroke-width:2}.trace-done{stroke:#b36916}.sample-band{fill:var(--brand);opacity:.1}.signal-labels{fill:var(--muted);font:10px var(--mono)}.sample-labels{fill:var(--muted);font:9px var(--mono)}.wave-panel>p{margin:0}.edge-buttons{display:grid;grid-template-columns:repeat(8,1fr);gap:9px}.edge-buttons button{border:1px solid var(--rule);background:var(--paper);border-radius:4px;padding:10px 6px}.edge-buttons button[aria-pressed=true]{border-color:var(--brand);background:var(--brand-soft);color:var(--brand)}.edge-buttons span,.edge-buttons b{display:block;font-family:var(--mono);font-size:11px}.edge-buttons b{font-weight:500;margin-top:6px}.register-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:20px 0 30px}.register-grid article{background:var(--paper);border:1px solid var(--rule);border-radius:5px;padding:22px}.register-grid h3{font-size:15px}.register-grid .mono{font-size:13px;color:var(--brand)}.register-grid p:last-child{margin:0}
+@media(max-width:760px){.lab-controls{padding:16px;gap:12px}.lab-controls input{width:125px}.lab-metrics{grid-template-columns:1fr 1fr}.lab-metrics>div{padding:14px;border-bottom:1px solid var(--rule)}.lab-metrics>div:nth-child(2n){border-right:0}.lab-metrics>div:nth-child(3){border-bottom:0}.lab-metrics strong{font-size:17px}.wave-panel{padding:16px}.edge-buttons{grid-template-columns:repeat(4,1fr)}.register-grid{grid-template-columns:1fr}.register-grid article{padding:18px}}
+</style>

@@ -1,0 +1,15 @@
+---
+import type { Lesson } from '../lib/catalog';
+interface Props { items: Lesson[]; compact?: boolean }
+const { items, compact = false } = Astro.props;
+---
+<div class:list={['learning-records', { compact }]}>
+  {items.map(lesson => <details class="learning-record" data-lesson={lesson.id}>
+    <summary><span class="status-dot" data-dot={lesson.id}></span><span>{lesson.title}</span><span class="record-label">记录</span></summary>
+    <div class="record-body">
+      <div class="record-top"><a href={lesson.url}>阅读本课 →</a><label>个人状态 <select data-progress={lesson.id} aria-label={`${lesson.id} 学习状态`}><option value="new">未开始</option><option value="learning">学习中</option><option value="done">已验收</option></select></label></div>
+      <label>预测、观察与解释<textarea data-note={lesson.id} rows="4" maxlength="20000" aria-label={`${lesson.id} 学习笔记`} placeholder="先写电路 / 波形预测，再记录观察、证据与自己的解释。"></textarea></label>
+      <p class="small muted">输入后自动保存在此浏览器。能独立解释并完成课程验收，再标记“已验收”。</p>
+    </div>
+  </details>)}
+</div>

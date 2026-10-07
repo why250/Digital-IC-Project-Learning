@@ -80,3 +80,7 @@ RTL 教学项目单独采用 clk_core=49.152 MHz，输入每 8 个 core 周期�
 先做 DF01：统一码流编码、FS、采样率和 PSD 单位；用 3 kHz 正弦校验 FFT。随后做 DF03 的 47 kHz→1 kHz 混叠实验，再进入滤波器设计。
 
 相关 [ADC 内部数字模块专题](../adc_digital/00_course.md)覆盖多比特反馈DEM及TI样本/校准。DEM位于反馈环路并改变延迟与失配频谱，后级抽取位于输出通路；两者不能混作同一个滤波模块。
+
+## 外部资料怎样服务抽取项目
+
+滤波与频谱仍由本专题主导（K16）；RTL/流水/存储/实现方法查 [Mapping](../references/course_mapping.md)，不把数字课当作抽取理论首选。理解变化写 [日志](../learning_log/README.md)，验收仍在本专题 workbook。

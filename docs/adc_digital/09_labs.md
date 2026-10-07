@@ -44,20 +44,7 @@ flowchart LR
 
 重排和校正都是寄存器、mux、加法器与乘法器，使用100MHz core；真实多相采样时钟不由此框图证明。
 
-本地PowerShell先部署，普通scp传输并核验SHA-256：
-
-```powershell
-./tools/deploy.ps1
-ssh -T IC_Server 'cd /home/userone/AAAIC/test_tb/digital_ic_learning && bash lessons/adc_digital/scripts/run_models.sh'
-ssh -T IC_Server 'cd /home/userone/AAAIC/test_tb/digital_ic_learning && bash lessons/adc_digital/scripts/run_sim.sh'
-ssh -T IC_Server 'cd /home/userone/AAAIC/test_tb/digital_ic_learning && bash lessons/adc_digital/scripts/run_stream.sh'
-ssh -T IC_Server 'cd /home/userone/AAAIC/test_tb/digital_ic_learning && bash lessons/adc_digital/scripts/run_synth.sh'
-./tools/collect_adc_results.ps1 -IncludeVcd
-```
-
-Python仅标准库，使用已有Icarus和Genus，不安装系统包/修改PATH；七个top串行独立batch，不改GUI/服务。所有向量、trace、JSON、VCD、mapped netlist和报告留Git忽略的`results/`。
-
-完成标记分别为`ADC_MODEL_VERIFICATION_COMPLETE`、`ADC_SIMULATION_COMPLETE`、`ADC_STREAM_VERIFICATION_COMPLETE`、`ADC_SYNTHESIS_VERIFIED_OUTPUTS`。必须同时检查exit code，部分PASS不能代替整套通过。
+部署、models→sim→stream→synth 命令、完成标记与结果收集统一见 [运行指南](../running.md#adc-数字模块)。逐课源码与证据类型见上表；本页维护接口假设和结果解释，最新验证摘要见 [进度](../progress.md#adc已验证范围)。
 
 ## 学习与接口假设
 
@@ -81,7 +68,7 @@ missing/late/duplicate/wrong tag/epoch/lane、槽冲突、sink违约、id/versio
 
 ## 实现和指标边界
 
-本次实际七top综合/setup通过，详细记录见进度。TI后端18625个教学库单元，最差setup裕量2317ps；七top映射前后timing intent均0，未映射/未知单元/latch检查通过。接口回归18场景及连续流65536有效样本通过；受控模型的SFDR36.478→98.060dB，校正后SNDR67.791dB。
+七 top 的映射/setup、接口回归与连续流结果统一见 [ADC 验证摘要](../progress.md#adc已验证范围)。以下说明如何把其中的时序与频谱结果对应到电路。
 
 TI最慢路径是校正gain寄存器到乘积寄存器：10ns周期减100ps setup、200ps uncertainty，允许9700ps，报告数据路径7383ps，剩2317ps。沿路径查看FF clk-to-Q、xor/nand/inv、fanout/load，再解释为什么乘法器虽有流水仍可能是瓶颈；不能只凭“P=4”推断每段延迟相等。当前clock net latency为理想0，wireload为教学估计，不是CTS/提取后的结果。
 

@@ -1,0 +1,30 @@
+{
+  "name": "digital-ic-classroom",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "packageManager": "pnpm@11.16.0",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1 --port 4322",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1 --port 4322",
+    "check": "astro check",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "test:browser": "playwright test",
+    "deploy": "node scripts/deploy-pages.mjs"
+  },
+  "dependencies": {
+    "astro": "7.3.2",
+    "github-slugger": "2.0.0",
+    "marked": "^17.0.1",
+    "mermaid": "^11.12.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@playwright/test": "1.63.0",
+    "@types/node": "^22.20.5",
+    "tsx": "^4.20.0",
+    "typescript": "5.9.3",
+    "wrangler": "4.131.2"
+  }
+}

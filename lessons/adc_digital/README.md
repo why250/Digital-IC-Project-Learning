@@ -8,6 +8,6 @@
 - `scripts/`：models→sim→stream→synth，独立batch，实际结果见进度记录。
 - `results/`：生成产物，Git忽略，工艺/许可/安装工具不入库。
 
-100MHz core/4M总采样率、响应1…60周期、sample+80重排、P=4校正；offset signed18/F4、inverse_gain signed18/F16、输出signed18/F4。TI内部同core，FIFO为独立双clock实验，SPI第一课保持原契约。
+固定参数、响应窗口、样本/系数格式与复位契约见 [TI 后端项目规格](../../docs/adc_digital/06_project.md)，各模块实现假设见 [实验指南](../../docs/adc_digital/09_labs.md)。统一运行命令与结果收集见 [运行指南](../../docs/running.md#adc-数字模块)。
 
 时钟trim、通用后台校准、SPI寄存器桥、无损回绕、真实hold/物理签核未实现。timing/RC/jitter/校准条件由数值模型演示，不能代替真实ADC电路证据。

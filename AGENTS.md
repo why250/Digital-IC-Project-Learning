@@ -4,6 +4,16 @@ This project teaches digital IC design to an experienced analog IC engineer.
 Explain concepts in Chinese, connecting RTL to registers, gates, timing, load and PVT.
 Start with lesson 01: a single-system-clock SPI master. Keep later topics separate.
 
+## Curriculum and external references
+- Keep this project's mixed-signal learning route primary; preserve existing lesson IDs.
+- Read docs/references/course_mapping.md before adding external courses, books or videos.
+- Attach resources to existing K knowledge nodes. Add a node only for a new engineering capability, not a new source.
+- Reuse existing explanations; link a specific official/versioned reading to a project experiment and an expected artefact.
+- Save links and original interpretations, not copyrighted slides, books, solutions or school tool environments.
+- Keep personal acceptance in workbooks, learning narratives in docs/learning_log, and engineering evidence in docs/progress.md.
+- Record Prediction -> Experiment -> Evidence -> Conclusion. Never invent personal learning or unexecuted tool results.
+- Run python tools/check_docs.py and git diff --check after documentation changes. Documentation-only changes do not require EDA reruns.
+
 ## Server and tools
 - SSH alias: IC_Server, existing key authentication.
 - Remote project: /home/userone/AAAIC/test_tb/digital_ic_learning.

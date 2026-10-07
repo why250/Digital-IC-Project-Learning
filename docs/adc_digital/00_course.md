@@ -76,3 +76,7 @@ FFT/PSD 口径复用 [DF01](../delta_sigma_filter/01_spectrum.md)，定点复用
 主教材是本目录的讲义、练习、答案与结课规格。补充阅读可选 Schreier/Temes 的《Understanding Delta-Sigma Data Converters》（DEM、环路和非理想），Oppenheim/Schafer 的《Discrete-Time Signal Processing》（采样、频谱与重构），以及 Razavi 的 ADC 架构讲义/课程（SAR、Flash、Pipeline与TI）。按对应课的问题检索阅读，不要求整本先读完。
 
 复杂校准论文先检查输入统计假设、误差模型、参考通道、clock actuator与收敛条件，再考虑移植算法。论文中某工艺/频率下的测试结果不直接成为本项目预算。
+
+## 外部资料怎样服务 ADC 项目
+
+SAR/TI/校准、样本身份与系数契约保留在本专题；公共 RTL/验证/实现方法查 [Mapping](../references/course_mapping.md)。已有工程证据不自动完成个人学习；用 [日志](../learning_log/README.md) 记录理解，再回本专题 workbook 验收。

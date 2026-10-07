@@ -11,8 +11,11 @@ if ($SshHost -notmatch '^[A-Za-z0-9_.-]+$' -or
 $projectDir = Split-Path $PSScriptRoot -Parent
 Push-Location $projectDir
 try {
-    $paths = @(git ls-files --cached --others --exclude-standard)
-    if ($LASTEXITCODE -ne 0 -or $paths.Count -eq 0) { throw 'Initialize Git before deployment.' }
+    $allPaths = @(git ls-files --cached --others --exclude-standard)
+    if ($LASTEXITCODE -ne 0) { throw 'Unable to list project files.' }
+    # The frontend has its own Pages deployment and is not an EDA server input.
+    $paths = @($allPaths | Where-Object { $_ -notlike 'web/*' })
+    if ($paths.Count -eq 0) { throw 'Initialize Git before deployment.' }
     & ssh -T -o BatchMode=yes $SshHost "mkdir -p -- '$RemoteDir'"
     if ($LASTEXITCODE -ne 0) { throw 'Remote directory creation failed.' }
     foreach ($relative in $paths) {

@@ -51,3 +51,7 @@
 里程碑：D1理想重构/镜像模型；D2四路交付/预加载台账；D3前台offset/gain估计和整数校正；D4连续时间失配频谱/接口评审。当前个人与工具状态均待记录。
 
 100MHz同步RTL只规定名义事件。真实开关jitter、clock tree、settling、glitch、ps级trim及PVT需电路/物理证据；本例不证明GHz DAC可实现性。首版不要求未知业务后台校准或真实clock actuator。
+
+## 外部资料怎样服务 DAC 项目
+
+重构/插值、预加载、门控、DEM 和核失配仍由本专题主导；流水/接口/验证方法按 [Mapping](../references/course_mapping.md) 选读。实际学习写 [日志](../learning_log/README.md)，验收仍在本专题 workbook。

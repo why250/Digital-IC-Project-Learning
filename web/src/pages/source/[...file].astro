@@ -1,0 +1,10 @@
+---
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import Base from '../../layouts/Base.astro';
+import { sourceFiles, projectRoot, repositoryURL } from '../../lib/catalog';
+export function getStaticPaths() { return sourceFiles.map(file => ({ params: { file }, props: { file } })); }
+const { file } = Astro.props;
+const content = readFileSync(path.join(projectRoot, file), 'utf8');
+---
+<Base title={path.basename(file)}><div class="wrap"><header class="page-heading"><p class="eyebrow">Source / Read the circuit</p><h1>{path.basename(file)}</h1><p>{file}</p><div class="actions"><a class="button" href="/courses/">← 返回课程目录</a><a class="button" href={`${repositoryURL}/blob/main/${file}`} target="_blank" rel="noreferrer">GitHub 源码 ↗</a></div></header><pre class="source-code"><code>{content}</code></pre></div></Base>
